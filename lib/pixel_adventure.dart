@@ -6,16 +6,17 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_flame/character/player.dart';
-import 'package:flutter_flame/levels/level.dart';
+import 'package:flutter_flame/components/player.dart';
+import 'package:flutter_flame/components/level.dart';
 
-class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCallbacks {
+class PixelAdventure extends FlameGame
+    with HasKeyboardHandlerComponents, DragCallbacks, HasCollisionDetection {
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late final CameraComponent cam;
   Player player = Player(character: "Mask Dude");
   late JoystickComponent joystick;
-  bool showJoystick = true;
+  bool showJoystick = false;
 
   @override
   FutureOr<void> onLoad() async{
@@ -23,7 +24,7 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
     await images.loadAllImages();
 
     final world = Level(
-      levelName: "Level-01",
+      levelName: "Level-02",
       player: player,
     );
 
@@ -71,16 +72,16 @@ class PixelAdventure extends FlameGame with HasKeyboardHandlerComponents, DragCa
       case JoystickDirection.left:
       case JoystickDirection.upLeft:
       case JoystickDirection.downLeft:
-        player.playerDirection = PlayerDirection.left;
+        player.horizontalMovement = -1;
         break;
       case JoystickDirection.right:
       case JoystickDirection.upRight:
       case JoystickDirection.downRight:
-        player.playerDirection = PlayerDirection.right;
+        player.horizontalMovement = 1;
         break;
       default:
         //idle
-        player.playerDirection = PlayerDirection.none;
+        player.horizontalMovement = 0;
         break;
     }
   }
