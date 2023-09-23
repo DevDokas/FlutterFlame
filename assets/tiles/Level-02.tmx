@@ -12,7 +12,7 @@
 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,112,24,24,24,
 24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,24,112,24,24,24,
 24,24,24,92,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,134,93,24,24,24,
-24,24,24,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,24,24,24,
+24,24,24,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,0,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,24,24,24,
 24,24,24,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,24,24,24,
 24,24,24,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,24,24,24,
 24,24,24,113,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,71,111,24,24,24,
@@ -44,24 +44,18 @@
   <object id="25" name="Orange" type="Fruit" x="544" y="80" width="32" height="32"/>
   <object id="26" name="Orange" type="Fruit" x="544" y="128" width="32" height="32"/>
   <object id="27" name="Orange" type="Fruit" x="544" y="176" width="32" height="32"/>
-  <object id="29" name="Saw" type="Saw" x="48" y="64" width="32" height="32">
-   <properties>
-    <property name="isHorizontal" type="bool" value="false"/>
-    <property name="isVertical" type="bool" value="false"/>
-   </properties>
-  </object>
   <object id="30" name="Saw" type="Saw" x="288" y="32" width="32" height="32">
    <properties>
     <property name="isVertical" type="bool" value="true"/>
     <property name="offNeg" type="float" value="0"/>
-    <property name="offPositive" type="float" value="16"/>
+    <property name="offPos" type="float" value="17"/>
    </properties>
   </object>
   <object id="31" name="Saw" type="Saw" x="464" y="304" width="32" height="32">
    <properties>
     <property name="isVertical" type="bool" value="false"/>
     <property name="offNeg" type="float" value="12"/>
-    <property name="offPositive" type="float" value="1"/>
+    <property name="offPos" type="float" value="1"/>
    </properties>
   </object>
  </objectgroup>
