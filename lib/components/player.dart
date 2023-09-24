@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_flame/components/checkpoint.dart';
 import 'package:flutter_flame/components/custom_hitbox.dart';
 import 'package:flutter_flame/components/saw.dart';
+import 'package:flutter_flame/components/spikes.dart';
 import 'package:flutter_flame/components/utils.dart';
 import 'package:flutter_flame/pixel_adventure.dart';
 
@@ -15,9 +17,11 @@ enum PlayerState {
   idle,
   running,
   jumping,
+  doubleJumping,
   falling,
   hit,
   appearing,
+  finishedLevel,
 }
 
 class Player extends SpriteAnimationGroupComponent
@@ -31,13 +35,15 @@ class Player extends SpriteAnimationGroupComponent
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;
+  late final SpriteAnimation doubleJumpingAnimation;
   late final SpriteAnimation fallingAnimation;
   late final SpriteAnimation hitAnimation;
   late final SpriteAnimation appearingAnimation;
+  late final SpriteAnimation disappearingAnimation;
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
-  final double _jumpForce = 180;
+  final double _jumpForce = 160;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
   double moveSpeed = 100;
@@ -56,8 +62,10 @@ class Player extends SpriteAnimationGroupComponent
   bool isFacingLeft = false;
   bool isRunning = false;
   bool isGoingDown = false;
+  bool hasDashed = false;
   bool hasJumped = false;
   bool hasJumpReseted = false;
+  bool hasReachedCheckpoint = false;
   bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
   CustomHitbox hitbox = CustomHitbox(
@@ -83,11 +91,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
-    print("num de pulos");
-    print(jumpsLeft);
-
-
-    if(!gotHit) {
+    if(!gotHit && !hasReachedCheckpoint) {
       _updatePlayerState();
       _updatePlayerMovement(dt);
       _checkHorizontalCollisions();
@@ -113,9 +117,9 @@ class Player extends SpriteAnimationGroupComponent
     horizontalMovement += isLeftKeyPressed ? -1 : 0;
     horizontalMovement += isRightKeyPressed ? 1 : 0;
 
-    hasJumped = keysPressed.contains(LogicalKeyboardKey.space) || keysPressed.contains(LogicalKeyboardKey.arrowUp) || keysPressed.contains(LogicalKeyboardKey.keyW);
+    hasJumped = keysPressed.contains(LogicalKeyboardKey.arrowUp) || keysPressed.contains(LogicalKeyboardKey.keyW);
 
-
+    hasDashed = keysPressed.contains(LogicalKeyboardKey.space);
 
 
     if (isLeftKeyPressed) {
@@ -150,13 +154,13 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Fruit) {
-      other.collidedWithPlayer();
+    if(!hasReachedCheckpoint) {
+      if (other is Fruit) other.collidedWithPlayer();
+      if (other is Saw) _respawn();
+      if (other is Spikes) _respawn();
+      if (other is Checkpoint) _reachedCheckpoint();
     }
-    if (other is Saw) {
-      _respawn();
-      //other.collidedWithPlayer();
-    }
+
     super.onCollision(intersectionPoints, other);
   }
 
@@ -172,6 +176,10 @@ class Player extends SpriteAnimationGroupComponent
     hitAnimation = _spriteAnimation("Hit", 7, 32);
 
     appearingAnimation = _appearingAnimation();
+
+    disappearingAnimation = _disappearingAnimation();
+
+    doubleJumpingAnimation = _spriteAnimation("Double Jump", 6, 32);
     //list all animations
     animations = {
       PlayerState.idle: idleAnimation,
@@ -180,6 +188,8 @@ class Player extends SpriteAnimationGroupComponent
       PlayerState.falling: fallingAnimation,
       PlayerState.hit: hitAnimation,
       PlayerState.appearing: appearingAnimation,
+      PlayerState.finishedLevel: disappearingAnimation,
+      PlayerState.doubleJumping: doubleJumpingAnimation,
     };
 
     //set current animation
@@ -206,6 +216,17 @@ class Player extends SpriteAnimationGroupComponent
     ),
   );   
 }
+
+  SpriteAnimation _disappearingAnimation() {
+    print("Appears");
+    return SpriteAnimation.fromFrameData(
+      game.images.fromCache("Main Characters/Disappearing (96x96).png"), SpriteAnimationData.sequenced(
+      amount: 7,
+      stepTime: stepTime,
+      textureSize: Vector2.all(96),
+    ),
+    );
+  }
 
   void _updatePlayerMovement(double dt) {
 
@@ -267,14 +288,6 @@ class Player extends SpriteAnimationGroupComponent
         }
       }
     }
-
-
-
-
-
-    /*if (velocity.y > _gravity) {
-      isOnGround = false;
-    }*/
 
     velocity.x = horizontalMovement * moveSpeed;
     position.x += velocity.x * dt;
@@ -399,5 +412,20 @@ class Player extends SpriteAnimationGroupComponent
         });
       });
     });
+  }
+
+  void _reachedCheckpoint() {
+    hasReachedCheckpoint = true;
+
+    if(scale.x > 0){
+      position = position - Vector2.all(32);
+    } else if (scale.x < 0) {
+      position = position + Vector2(32, -32);
+    }
+
+    current = PlayerState.finishedLevel;
+    PixelAdventure pixelAdventure = PixelAdventure();
+
+    pixelAdventure.playerHasFinishedLevel();
   }
 }

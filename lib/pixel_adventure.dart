@@ -18,13 +18,15 @@ class PixelAdventure extends FlameGame
   late JoystickComponent joystick;
   bool showJoystick = false;
 
+  int currentLevel = 1;
+
   @override
   FutureOr<void> onLoad() async{
     //load all images into cache
     await images.loadAllImages();
 
     final world = Level(
-      levelName: "Level-03",
+      levelName: "Level-0$currentLevel",
       player: player,
     );
 
@@ -84,5 +86,9 @@ class PixelAdventure extends FlameGame
         player.horizontalMovement = 0;
         break;
     }
+  }
+
+  void playerHasFinishedLevel (int newLevel) {
+    currentLevel = newLevel;
   }
 }

@@ -79,8 +79,4 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure>{
     }
     position.x += moveDirection * moveSpeed * dt;
   }
-
-  void collidedWithPlayer() {
-
-  }
 }

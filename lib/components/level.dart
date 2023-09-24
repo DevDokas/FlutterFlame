@@ -3,9 +3,11 @@ import 'dart:async';
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter_flame/components/background_tile.dart';
+import 'package:flutter_flame/components/checkpoint.dart';
 import 'package:flutter_flame/components/collision_block.dart';
 import 'package:flutter_flame/components/fruit.dart';
 import 'package:flutter_flame/components/saw.dart';
+import 'package:flutter_flame/components/spikes.dart';
 import 'package:flutter_flame/pixel_adventure.dart';
 
 import 'player.dart';
@@ -94,6 +96,22 @@ class Level extends World with HasGameRef<PixelAdventure>{
                 size: Vector2(spawnPoints.width, spawnPoints.height)
             );
             add(saw);
+            break;
+          case "Spikes":
+            final spikes = Spikes(
+              position: Vector2(spawnPoints.x, spawnPoints.y),
+              size: Vector2(spawnPoints.width, spawnPoints.height)
+            );
+            add(spikes);
+            break;
+          case "Checkpoint":
+            final isVertical = spawnPoints.properties.getValue('isVertical');
+            final checkpoint = Checkpoint(
+
+                position: Vector2(spawnPoints.x, spawnPoints.y),
+                size: Vector2(spawnPoints.width, spawnPoints.height)
+            );
+            add(checkpoint);
             break;
           default:
         }
