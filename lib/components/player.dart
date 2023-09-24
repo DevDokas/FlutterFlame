@@ -45,10 +45,19 @@ class Player extends SpriteAnimationGroupComponent
   Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
   bool isOnGround = false;
-  bool isOnWall = false;
+  bool isOnLeftWall = false;
+  bool isOnRightWall = false;
+  bool isOnAir = false;
+  bool isGoingLeft = false;
+  bool isGoingRight = false;
+  bool isFacingLeftWall = false;
+  bool isFacingRightWall = false;
+  bool isFacingRight = false;
+  bool isFacingLeft = false;
   bool isRunning = false;
   bool isGoingDown = false;
   bool hasJumped = false;
+  bool hasJumpReseted = false;
   bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
   CustomHitbox hitbox = CustomHitbox(
@@ -74,6 +83,10 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void update(double dt) {
+    print("num de pulos");
+    print(jumpsLeft);
+
+
     if(!gotHit) {
       _updatePlayerState();
       _updatePlayerMovement(dt);
@@ -101,6 +114,24 @@ class Player extends SpriteAnimationGroupComponent
     horizontalMovement += isRightKeyPressed ? 1 : 0;
 
     hasJumped = keysPressed.contains(LogicalKeyboardKey.space) || keysPressed.contains(LogicalKeyboardKey.arrowUp) || keysPressed.contains(LogicalKeyboardKey.keyW);
+
+
+
+
+    if (isLeftKeyPressed) {
+      isGoingLeft = true;
+      print("esquerda");
+      print(isGoingLeft);
+    } else {
+      isGoingLeft = false;
+      print("direita");
+      print(isGoingRight);
+    }
+    if(isRightKeyPressed) {
+      isGoingRight = true;
+    } else {
+      isGoingRight = false;
+    }
 
     if (isDownKeyPressed) {
       isGoingDown = true;
@@ -178,30 +209,63 @@ class Player extends SpriteAnimationGroupComponent
 
   void _updatePlayerMovement(double dt) {
 
+    if(!isOnGround && !isOnLeftWall || !isOnGround && !isOnRightWall) {
+      isOnAir = true;
+    }
+
     if(isOnGround) {
       jumpsLeft = 2;
-      if (hasJumped) {
+      isOnAir = false;
+      hasJumpReseted = true;
+      if (hasJumped && hasJumpReseted) {
+        jumpsLeft--;
         _playerJump(dt);
+        hasJumpReseted = false;
         hasJumped = false;
+        if(isOnGround) {
+          hasJumped = false;
+        }
       }
       if (isRunning) {
         position.x += velocity.x * 1.03 * dt;
       }
-    } else {
+    } else if (!isOnGround){
       if (hasJumped) {
         if (jumpsLeft > 0) {
           _playerJump(dt);
           jumpsLeft = 0;
+          hasJumpReseted = false;
         }
+      }
+      if (isRunning) {
+        position.x += velocity.x * 1.03 * dt;
       }
     }
 
-    if(isOnWall) {
-      jumpsLeft = 0;
-      if (jumpsLeft > 0 && hasJumped) {
-        _playerJump(dt);
+    if(isFacingLeftWall) {
+      if (!isGoingLeft && isGoingRight && hasJumpReseted) {
+        jumpsLeft = 1;
       }
-      jumpsLeft = 1;
+      if(isOnLeftWall) {
+        hasJumpReseted = true;
+        if (hasJumped && jumpsLeft > 0 && hasJumpReseted) {
+          _playerJump(dt);
+          jumpsLeft--;
+          hasJumpReseted = false;
+        }
+      }
+    } else if(isFacingRightWall) {
+      if (!isGoingRight && isGoingLeft && hasJumpReseted) {
+        jumpsLeft = 1;
+      }
+      if(isOnRightWall) {
+        hasJumpReseted = true;
+        if (hasJumped && jumpsLeft > 0 && hasJumpReseted) {
+          _playerJump(dt);
+          jumpsLeft--;
+          hasJumpReseted = false;
+        }
+      }
     }
 
 
@@ -220,15 +284,18 @@ class Player extends SpriteAnimationGroupComponent
     velocity.y = -_jumpForce;
     position.y += velocity.y * dt;
     isOnGround = false;
-    hasJumped = false;
   }
 
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
     if(velocity.x < 0 && scale.x > 0) {
+      isFacingLeft = true;
+      isFacingRight = false;
       flipHorizontallyAroundCenter();
     } if (velocity.x > 0 && scale.x < 0) {
+      isFacingLeft = false;
+      isFacingRight = true;
       flipHorizontallyAroundCenter();
     }
 
@@ -254,15 +321,22 @@ class Player extends SpriteAnimationGroupComponent
           if (velocity.x > 0) {
             velocity.x = 0;
             position.x = block.x - hitbox.offsetX - hitbox.width;
-            isOnWall = true;
+            isOnRightWall = true;
+            isFacingRightWall = true;
+            isFacingLeftWall = false;
             break;
           }
           if (velocity.x < 0) {
             velocity.x = 0;
             position.x = block.x + block.width + hitbox.width + hitbox.offsetX;
-            isOnWall = true;
+            isOnLeftWall = true;
+            isFacingRightWall = false;
+            isFacingLeftWall = true;
             break;
           }
+        } else {
+          isOnRightWall = false;
+          isOnLeftWall = false;
         }
       }
     }

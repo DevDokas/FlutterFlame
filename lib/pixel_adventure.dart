@@ -24,7 +24,7 @@ class PixelAdventure extends FlameGame
     await images.loadAllImages();
 
     final world = Level(
-      levelName: "Level-01",
+      levelName: "Level-03",
       player: player,
     );
 

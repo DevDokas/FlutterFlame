@@ -3,20 +3,40 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-01.tmx",
+    "activeFile": "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
     "expandedProjectPaths": [
         "."
     ],
+    "file.lastUsedOpenFilter": "Todos os Ficheiros (*)",
     "fileStates": {
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320,
+                "y": 184
+            }
+        },
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 320,
+                "y": 184
+            }
+        },
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/TilesetPixelAdventure.tsx": {
+            "scaleInDock": 1
+        },
         "Level-01.tmx": {
             "expandedObjectLayers": [
                 4
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 302.6666666666667,
-                "y": -10.666666666666629
+                "x": 322,
+                "y": 148
             }
         },
         "Level-02.tmx": {
@@ -25,19 +45,41 @@
                 2
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 319.33333333333326,
-                "y": 184
+                "x": 317.33333333333326,
+                "y": 182
+            }
+        },
+        "Level-03.tmx": {
+            "expandedObjectLayers": [
+                3,
+                2
+            ],
+            "scale": 1.63578125,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 318.5022447225141,
+                "y": 261.64867704651834
             }
         },
         "TilesetPixelAdventure.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "test.tmj": {
+            "scale": 1.63578125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 319.7249020918904,
+                "y": 182.7872767217499
+            }
         }
     },
+    "last.exportedFilePath": "C:/code/ws-flutter/flutter_flame/assets/tiles",
     "last.imagePath": "C:/code/ws-flutter/flutter_flame/assets/images/Terrain",
     "map.height": 23,
+    "map.lastUsedExportFilter": "Ficheiros de mapa JSON (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
@@ -45,14 +87,20 @@
     "openFiles": [
         "TilesetPixelAdventure.tsx",
         "Level-01.tmx",
-        "Level-02.tmx"
+        "Level-02.tmx",
+        "test.tmj",
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx",
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx"
     ],
     "project": "PixelAdventure.tiled-project",
     "property.type": "float",
     "recentFiles": [
+        "test.tmj",
         "TilesetPixelAdventure.tsx",
+        "Level-01.tmx",
         "Level-02.tmx",
-        "Level-01.tmx"
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
+        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {
