@@ -8,15 +8,16 @@ import 'package:flutter_flame/pixel_adventure.dart';
 import 'custom_hitbox.dart';
 
 class Checkpoint extends SpriteAnimationComponent with HasGameRef<PixelAdventure>, CollisionCallbacks {
+  int nextLevel;
+
   Checkpoint({
+    this.nextLevel = 1,
     position,
     size,
   }) : super(
     position: position,
     size: size,
   );
-
-  bool hasReachedCheckpoint = false;
 
   final hitbox = CustomHitbox(
       offsetX: 19,
@@ -49,14 +50,19 @@ class Checkpoint extends SpriteAnimationComponent with HasGameRef<PixelAdventure
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-    if (other is Player && !hasReachedCheckpoint) {
-      _reachedCheckpoint();
-    }
+
     super.onCollision(intersectionPoints, other);
   }
 
-  void _reachedCheckpoint() {
-    hasReachedCheckpoint = true;
+  @override
+  void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if (other is Player) {
+      _reachedCheckpoint();
+    }
+    super.onCollisionStart(intersectionPoints, other);
+  }
+
+  void _reachedCheckpoint() async {
     animation = SpriteAnimation.fromFrameData(
         game.images.fromCache('Items/Checkpoints/Checkpoint/Checkpoint (Flag Out) (64x64).png'),
         SpriteAnimationData.sequenced(
@@ -66,16 +72,17 @@ class Checkpoint extends SpriteAnimationComponent with HasGameRef<PixelAdventure
             loop: false,
         )
     );
-    Future.delayed(const Duration(milliseconds: 1300), () {
-      animation = SpriteAnimation.fromFrameData(
-          game.images.fromCache('Items/Checkpoints/Checkpoint/Checkpoint (Flag Idle)(64x64).png'),
-          SpriteAnimationData.sequenced(
-            amount: 10,
-            stepTime: 0.05,
-            textureSize: Vector2.all(64),
-            loop: true,
-          )
-      );
-    });
+
+    await animationTicker?.completed;
+
+    animation = SpriteAnimation.fromFrameData(
+        game.images.fromCache('Items/Checkpoints/Checkpoint/Checkpoint (Flag Idle)(64x64).png'),
+        SpriteAnimationData.sequenced(
+          amount: 10,
+          stepTime: 0.05,
+          textureSize: Vector2.all(64),
+          loop: true,
+        )
+    );
   }
 }

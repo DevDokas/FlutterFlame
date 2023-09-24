@@ -39,31 +39,16 @@ class Level extends World with HasGameRef<PixelAdventure>{
     final backgroundLayer =
       level.tileMap.getLayer('Background');
 
-    const tileSize = 64;
-
-    final numTilesY = (game.size.y / tileSize).floor();
-    final numTilesX = (game.size.x / tileSize).floor();
-
     if (backgroundLayer != null) {
       final backgroundColor =
         backgroundLayer.properties.getValue('BackgroundColor');
+      final backgroundTile = BackgroundTile(
+        color: backgroundColor ?? 'Gray',
+        position: Vector2(0, 0),
+      );
 
-
-      for (double y = 0; y < game.size.y / numTilesY; y++) {
-        for (double x = 0; x < numTilesX; x++) {
-          final backgroundTile = BackgroundTile(
-            color: backgroundColor ?? 'Gray',
-            position: Vector2(x * tileSize, y * tileSize - tileSize),
-          );
-
-          add(backgroundTile);
-
-        }
-
-      }
-
+      add(backgroundTile);
     }
-
   }
 
   void _spawningObjects() {
@@ -74,6 +59,7 @@ class Level extends World with HasGameRef<PixelAdventure>{
         switch (spawnPoints.class_) {
           case "Player":
             player.position =  Vector2(spawnPoints.x, spawnPoints.y);
+            player.scale.x = 1;
             add(player);
             break;
           case "Fruit":
@@ -105,9 +91,9 @@ class Level extends World with HasGameRef<PixelAdventure>{
             add(spikes);
             break;
           case "Checkpoint":
-            final isVertical = spawnPoints.properties.getValue('isVertical');
+            final nextLevel = spawnPoints.properties.getValue('nextLevel');
             final checkpoint = Checkpoint(
-
+                nextLevel: nextLevel,
                 position: Vector2(spawnPoints.x, spawnPoints.y),
                 size: Vector2(spawnPoints.width, spawnPoints.height)
             );
