@@ -1,20 +1,23 @@
-/*
 import 'dart:io';
 
+import 'package:flame/game.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_flame/pixel_adventure.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class AdmobBanner extends StatefulWidget {
-  const AdmobBanner({Key? key}) : super(key: key);
+class GameConfig extends StatefulWidget {
+  const GameConfig({Key? key, required this.game}) : super(key: key);
+
+  final PixelAdventure game;
 
   @override
   State<StatefulWidget> createState() => _BannerExampleState();
 
 }
 
-class _BannerExampleState extends State<AdmobBanner> {
+class _BannerExampleState extends State<GameConfig> {
 
   @override
   void initState() {
@@ -60,24 +63,18 @@ class _BannerExampleState extends State<AdmobBanner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: Align(
-          alignment: Alignment.bottomCenter,
-          child: SafeArea(
-            child: SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            ),
-          ),
-        ),
-*/
-/*      body: _isLoaded ? SizedBox(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          GameWidget(game: kDebugMode ? PixelAdventure() : widget.game),
+        ],
+      ),
+      bottomNavigationBar: _isLoaded ? SizedBox(
         height: _bannerAd?.size.height.toDouble(),
         width: _bannerAd?.size.width.toDouble(),
         child: AdWidget(ad: _bannerAd!),
-      ) : const SizedBox(),*//*
-
+      ) : const SizedBox(),
     );
     throw UnimplementedError();
   }
-}*/
+}

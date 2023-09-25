@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_flame/config/Admob/AdmobBanner.dart';
+import 'package:flutter_flame/game_config.dart';
 import 'package:flutter_flame/pixel_adventure.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -19,8 +20,9 @@ void main() async{
         body: Stack(
           fit: StackFit.expand,
           children: [
-            GameWidget(game: kDebugMode ? PixelAdventure() : game),
-            AdmobBanner(game: game),
+            //GameWidget(game: kDebugMode ? PixelAdventure() : game),
+            GameConfig(game: game),
+            //AdmobBanner(game: game),
           ],
         ),
       ),
