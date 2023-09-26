@@ -1,4 +1,3 @@
-/*
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -10,23 +9,20 @@ class AdmobBanner extends StatefulWidget {
   const AdmobBanner({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _BannerExampleState();
+  State<StatefulWidget> createState() => BannerExampleState();
 
 }
 
-class _BannerExampleState extends State<AdmobBanner> {
+class BannerExampleState extends State<AdmobBanner> {
+  BannerAd? _bannerAd;
+  bool _isLoaded = false;
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     loadAd();
-    if (_bannerAd != null) {
-
-    }
   }
-
-  BannerAd? _bannerAd;
-  bool _isLoaded = false;
 
   // TODO: replace this test ad unit with your own ad unit.
   final adUnitId = Platform.isAndroid
@@ -48,8 +44,8 @@ class _BannerExampleState extends State<AdmobBanner> {
           });
         },
         // Called when an ad request failed.
-        onAdFailedToLoad: (ad, err) {
-          debugPrint('BannerAd failed to load: $err');
+        onAdFailedToLoad: (ad, error) {
+          debugPrint('BannerAd failed to load: $error');
           // Dispose the ad here to free resources.
           ad.dispose();
         },
@@ -59,25 +55,16 @@ class _BannerExampleState extends State<AdmobBanner> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        bottomNavigationBar: Align(
-          alignment: Alignment.bottomCenter,
-          child: SafeArea(
-            child: SizedBox(
-              width: _bannerAd!.size.width.toDouble(),
-              height: _bannerAd!.size.height.toDouble(),
-              child: AdWidget(ad: _bannerAd!),
-            ),
-          ),
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SafeArea(
+        child: SizedBox(
+          width: _bannerAd!.size.width.toDouble(),
+          height: _bannerAd!.size.height.toDouble(),
+          child: AdWidget(ad: _bannerAd!),
         ),
-*/
-/*      body: _isLoaded ? SizedBox(
-        height: _bannerAd?.size.height.toDouble(),
-        width: _bannerAd?.size.width.toDouble(),
-        child: AdWidget(ad: _bannerAd!),
-      ) : const SizedBox(),*//*
-
+      ),
     );
     throw UnimplementedError();
   }
-}*/
+}
