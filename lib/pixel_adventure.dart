@@ -6,6 +6,7 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter_flame/components/dash_button.dart';
 import 'package:flutter_flame/components/down_button.dart';
 import 'package:flutter_flame/components/jump_button.dart';
 import 'package:flutter_flame/components/player.dart';
@@ -44,6 +45,7 @@ class PixelAdventure extends FlameGame
       addJoystick();
       add(JumpButton());
       add(DownButton());
+      add(DashButton());
     }
 
     return super.onLoad();
@@ -75,10 +77,6 @@ class PixelAdventure extends FlameGame
 
     add(joystick);
   }
-
-/*  void addJumpButton() {
-    jumpButton =
-  }*/
 
   void updateJoystick() {
     switch (joystick.direction) {
