@@ -30,26 +30,26 @@
         },
         "Level-01.tmx": {
             "expandedObjectLayers": [
-                3,
-                4
+                4,
+                3
             ],
             "scale": 1.5,
-            "selectedLayer": 1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 320,
-                "y": 146
+                "x": 318.6666666666667,
+                "y": 183.33333333333334
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                3,
-                2
+                4,
+                3
             ],
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 316,
-                "y": 180.66666666666669
+                "x": 312.6666666666667,
+                "y": 177.33333333333334
             }
         },
         "Level-03.tmx": {
@@ -68,6 +68,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "backgrounds.tsx": {
+            "scaleInDock": 1
+        },
         "backup.tmx": {
             "expandedObjectLayers": [
                 2
@@ -75,8 +78,8 @@
             "scale": 1.63578125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 320.33623077657853,
-                "y": 184.00993409112615
+                "x": 319.7249020918904,
+                "y": 182.7872767217499
             }
         },
         "test.tmj": {
@@ -107,10 +110,11 @@
     "project": "PixelAdventure.tiled-project",
     "property.type": "int",
     "recentFiles": [
+        "backup.tmx",
+        "Level-02.tmx",
+        "Level-01.tmx",
         "test.tmj",
         "TilesetPixelAdventure.tsx",
-        "Level-01.tmx",
-        "Level-02.tmx",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx"
     ],

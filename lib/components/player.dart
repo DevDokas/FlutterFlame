@@ -5,6 +5,7 @@ import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_flame/components/checkpoint.dart';
 import 'package:flutter_flame/components/custom_hitbox.dart';
+import 'package:flutter_flame/components/movable_platform.dart';
 import 'package:flutter_flame/components/saw.dart';
 import 'package:flutter_flame/components/spikes.dart';
 import 'package:flutter_flame/components/utils.dart';
@@ -169,8 +170,36 @@ class Player extends SpriteAnimationGroupComponent
       if (other is Spikes) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
     }
-
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if(!hasReachedCheckpoint) {
+      if (other is MovablePlatform) {
+        if (other.isVertical) {
+          position.y = other.y - 32;
+
+          if (hasJumped) {
+            if (velocity.y < 0) {
+              velocity.y = -_jumpForce * 2;
+            } else {
+              velocity.y = -_jumpForce;
+            }
+            position.y += velocity.y * fixedDeltaTime;
+            isOnGround = false;
+          }
+
+          if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
+            current = PlayerState.running;
+          } else if(velocity.x == 0) {
+            current = PlayerState.idle;
+          }
+
+        }
+      }
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {

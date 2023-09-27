@@ -10,6 +10,7 @@ import 'package:flutter_flame/components/saw.dart';
 import 'package:flutter_flame/components/spikes.dart';
 import 'package:flutter_flame/pixel_adventure.dart';
 
+import 'movable_platform.dart';
 import 'player.dart';
 
 class Level extends World with HasGameRef<PixelAdventure>{
@@ -98,6 +99,21 @@ class Level extends World with HasGameRef<PixelAdventure>{
                 size: Vector2(spawnPoints.width, spawnPoints.height)
             );
             add(checkpoint);
+            break;
+          case "MovablePlatform":
+            final isVertical = spawnPoints.properties.getValue('isVertical');
+            final numOfPlatforms = spawnPoints.properties.getValue('numOfPlatforms');
+            final offNeg = spawnPoints.properties.getValue('offNeg');
+            final offPos = spawnPoints.properties.getValue('offPos');
+            final movablePlatform = MovablePlatform(
+                isVertical: isVertical,
+                numOfPlatforms: numOfPlatforms,
+                offNeg: offNeg,
+                offPos: offPos,
+                position: Vector2(spawnPoints.x, spawnPoints.y),
+                size: Vector2(spawnPoints.width, spawnPoints.height)
+            );
+            add(movablePlatform);
             break;
           default:
         }

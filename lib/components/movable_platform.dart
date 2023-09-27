@@ -4,12 +4,16 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter_flame/pixel_adventure.dart';
 
-class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure>{
+import 'custom_hitbox.dart';
+
+class MovablePlatform extends SpriteComponent with HasGameRef<PixelAdventure>{
   final bool isVertical;
+  final int numOfPlatforms;
   final double offNeg;
   final double offPos;
-  Saw({
+  MovablePlatform({
     this.isVertical = false,
+    this.numOfPlatforms = 0,
     this.offNeg = 0,
     this.offPos = 0,
     position,
@@ -18,19 +22,27 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure>{
       position: position,
       size: size
   );
-  static const double sawSpeed = 0.03;
   static const moveSpeed = 50;
   static const tileSize = 16;
 
   double moveDirection = 1;
   double rangeNeg = 0;
   double rangePos = 0;
+  String platformSprite = "";
+
+  CustomHitbox hitbox = CustomHitbox(
+      offsetX: 0,
+      offsetY: 0,
+      width: 16,
+      height: 16
+  );
 
   @override
   FutureOr<void> onLoad() {
     priority = -1;
-    add(CircleHitbox());
-    debugMode = true;
+
+    add(RectangleHitbox());
+    //debugMode = true;
 
     if (isVertical) {
       rangeNeg = position.y - offNeg * tileSize;
@@ -40,14 +52,26 @@ class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure>{
       rangePos = position.x + offPos * tileSize;
     }
 
-    animation = SpriteAnimation.fromFrameData(
-        game.images.fromCache('Traps/Saw/On (38x38).png'),
-        SpriteAnimationData.sequenced(
-            amount: 8,
-            stepTime: sawSpeed,
-            textureSize: Vector2.all(38),
-        ),
-    );
+    if (numOfPlatforms == 2) {
+      platformSprite = 'Terrain/Platform(2blocks).png';
+    } else if (numOfPlatforms == 3) {
+      platformSprite = 'Terrain/Platform(3blocks).png';
+    } else if (numOfPlatforms == 4) {
+      platformSprite = 'Terrain/Platform(4blocks).png';
+    } else {
+      platformSprite = 'Terrain/Platform(2blocks).png';
+    }
+
+    sprite = Sprite(game.images.fromCache(platformSprite));
+
+/*    animation = SpriteAnimation.fromFrameData(
+      game.images.fromCache(platformSprite),
+      SpriteAnimationData.sequenced(
+        amount: 1,
+        stepTime: 1,
+        textureSize: Vector2(hitbox.width, hitbox.height),
+      ),
+    );*/
     return super.onLoad();
   }
 

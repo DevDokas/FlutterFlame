@@ -24,13 +24,15 @@ class PixelAdventure extends FlameGame
   Player player = Player(character: "Mask Dude");
   late JoystickComponent joystick;
 
+  double playerX = 0;
+  double playerY = 0;
+
   // False = Keyboard || True = Touch
-  bool showControls = true;
+  bool showControls = false;
 
   List<String> levelNames = [
     "Level-01",
     "Level-02",
-    "Level-03"
   ];
   int currentLevelIndex = 0;
 
@@ -53,6 +55,12 @@ class PixelAdventure extends FlameGame
 
   @override
   void update(double dt) {
+
+    playerX = player.x;
+    playerY = player.y;
+
+    print(playerX);
+
     if (showControls) {
       updateJoystick();
     }
@@ -106,24 +114,34 @@ class PixelAdventure extends FlameGame
     }
   }
 
+  void _loadCamera(World world) {
+
+    cam = CameraComponent.withFixedResolution(
+        world: world,
+        width: 640,
+        height: 360
+    );
+    cam.viewfinder.anchor = Anchor.topLeft;
+    //cam.viewfinder.position = Vector2(playerX, playerY);
+
+
+    addAll([cam, world]);
+  }
+
   void _loadLevel() {
     if (player.parent != null) {
       player.removeFromParent();
     }
     Future.delayed(const Duration(seconds: 1), () {
+
       Level world = Level(
         levelName: levelNames[currentLevelIndex],
         player: player,
       );
 
-      cam = CameraComponent.withFixedResolution(
-          world: world,
-          width: 640,
-          height: 360
-      );
-      cam.viewfinder.anchor = Anchor.topLeft;
 
-      addAll([cam, world]);
+      _loadCamera(world);
+
     });
   }
 }
