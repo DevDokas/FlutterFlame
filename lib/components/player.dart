@@ -33,6 +33,8 @@ class Player extends SpriteAnimationGroupComponent
     this.character = 'Ninja Frog',
   }) : super(position: position);
 
+  late CameraComponent cam;
+
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
   late final SpriteAnimation jumpingAnimation;

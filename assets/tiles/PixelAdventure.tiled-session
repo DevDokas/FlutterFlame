@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
+    "activeFile": "Level-01.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -36,8 +36,8 @@
             "scale": 1.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 318.6666666666667,
-                "y": 183.33333333333334
+                "x": 318,
+                "y": 182.66666666666669
             }
         },
         "Level-02.tmx": {
@@ -102,19 +102,16 @@
     "openFiles": [
         "TilesetPixelAdventure.tsx",
         "Level-01.tmx",
-        "Level-02.tmx",
-        "test.tmj",
-        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx",
-        "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx"
+        "Level-02.tmx"
     ],
     "project": "PixelAdventure.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "backup.tmx",
+        "TilesetPixelAdventure.tsx",
         "Level-02.tmx",
         "Level-01.tmx",
+        "backup.tmx",
         "test.tmj",
-        "TilesetPixelAdventure.tsx",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx"
     ],

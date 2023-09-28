@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -22,13 +22,14 @@ class PixelAdventure extends FlameGame
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
   Player player = Player(character: "Mask Dude");
+
   late JoystickComponent joystick;
 
-  double playerX = 0;
-  double playerY = 0;
-
   // False = Keyboard || True = Touch
-  bool showControls = false;
+  bool showControls = true;
+
+  //Cam variable
+  double cameraSpeed = 125; //controls how much smoothness you want
 
   List<String> levelNames = [
     "Level-01",
@@ -43,23 +44,18 @@ class PixelAdventure extends FlameGame
 
     _loadLevel();
 
-    if (showControls) {
-      addJoystick();
-      add(JumpButton());
-      add(DownButton());
-      add(DashButton());
-    }
+/*    Level currentLevel = Level(
+      levelName: levelNames[currentLevelIndex],
+      player: player,
+    );*/
+
+    _addTouchControls();
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-
-    playerX = player.x;
-    playerY = player.y;
-
-    print(playerX);
 
     if (showControls) {
       updateJoystick();
@@ -114,24 +110,13 @@ class PixelAdventure extends FlameGame
     }
   }
 
-  void _loadCamera(World world) {
-
-    cam = CameraComponent.withFixedResolution(
-        world: world,
-        width: 640,
-        height: 360
-    );
-    cam.viewfinder.anchor = Anchor.topLeft;
-    //cam.viewfinder.position = Vector2(playerX, playerY);
-
-
-    addAll([cam, world]);
-  }
-
   void _loadLevel() {
     if (player.parent != null) {
-      player.removeFromParent();
+      //player.removeFromParent();
+      removeAll(children);
+      _addTouchControls();
     }
+
     Future.delayed(const Duration(seconds: 1), () {
 
       Level world = Level(
@@ -139,9 +124,27 @@ class PixelAdventure extends FlameGame
         player: player,
       );
 
+      cam = CameraComponent.withFixedResolution(
+        world: world,
+        width: 320,
+        height: 180,
+      );
 
-      _loadCamera(world);
+      cam.viewfinder.anchor = Anchor.center;
+      //cam.viewport.camera.moveBy(Vector2(player.x, player.y));
+      cam.follow(player, maxSpeed: cameraSpeed, snap: false);
+
+      addAll([cam, world]);
 
     });
+  }
+
+  _addTouchControls() {
+    if (showControls) {
+      addJoystick();
+      add(JumpButton());
+      add(DownButton());
+      add(DashButton());
+    }
   }
 }
