@@ -37,7 +37,7 @@ class PauseButton extends SpriteComponent
   @override
   void onTapUp(TapUpEvent event) {
     game.remove(this);
-    game.add(PlayButton());
+    //game.add(PlayButton());
     Future.delayed(const Duration(milliseconds: 100), () {
       game.paused = true;
     });

@@ -22,9 +22,16 @@ class TimeBeater extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
-  Player player = Player(character: "Mask Dude");
+  Player player = Player(character: "Ninja Frog");
 
   late JoystickComponent joystick;
+
+  //Ads
+  String admobOverlayIdentifier = 'AdmobBanner';
+
+  //MainMenu
+  String mainMenuOverlayIdentifier = 'MainMenu';
+  bool inMainMenu = true;
 
   // False = Keyboard || True = Touch
   bool showControls = true;
@@ -45,10 +52,13 @@ class TimeBeater extends FlameGame
 
     _loadLevel();
 
-/*    Level currentLevel = Level(
-      levelName: levelNames[currentLevelIndex],
-      player: player,
-    );*/
+    // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
+    if (inMainMenu) {
+      overlays.add(mainMenuOverlayIdentifier);
+      paused = true;
+    }
+
+
 
     _addTouchControls();
 
@@ -113,7 +123,6 @@ class TimeBeater extends FlameGame
 
   void _loadLevel() {
     if (player.parent != null) {
-      //player.removeFromParent();
       removeAll(children);
       _addTouchControls();
     }

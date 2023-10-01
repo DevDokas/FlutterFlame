@@ -37,7 +37,7 @@ class PlayButton extends SpriteComponent
 
   @override
   void onTapUp(TapUpEvent event) {
-    game.remove(this);
+    //game.remove(this);
     game.add(PauseButton());
     super.onTapUp(event);
   }

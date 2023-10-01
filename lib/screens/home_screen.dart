@@ -1,18 +1,18 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:time_beater/time_beater.dart';
 
-import '../components/pause_button.dart';
+import '../time_beater.dart';
 
-class PauseScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
   final TimeBeater game;
-  final pauseOverlayIdentifier = 'PauseMenu';
 
-  const PauseScreen(this.game, {super.key});
+  HomeScreen(this.game, {super.key});
 
-  void _resumeGame() {
+  void startGame() {
+    game.overlays.remove(game.mainMenuOverlayIdentifier);
+    game.overlays.add(game.admobOverlayIdentifier);
+    game.inMainMenu = false;
     game.paused = false;
-    game.overlays.remove(pauseOverlayIdentifier);
-    game.add(PauseButton());
   }
 
   @override
@@ -20,31 +20,32 @@ class PauseScreen extends StatelessWidget {
     return Align(
       child: Stack(
         children: [
-/*          Image.asset(
-            '',
+          Image.asset(
+            'assets/images/HUD/MainMenu.png',
             fit: BoxFit.cover,
             width: double.infinity,
             height: double.infinity,
             alignment: Alignment.center,
-          ),*/
+          ),
           Container(
-            height: 300,
-            width: 500,
-            padding: const EdgeInsets.all(25),
+            height: double.infinity,
+            width: double.infinity,
+            padding: const EdgeInsets.all(50),
             decoration: BoxDecoration(
               color: Colors.transparent,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 TextButton(
-                    onPressed: () => _resumeGame(),
+                    onPressed: () => startGame(),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(350.0, 50.0),
                       backgroundColor: Colors.red,
                     ),
                     child: const Text(
-                      "Continuar",
+                      "Novo Jogo",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -53,10 +54,9 @@ class PauseScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          )
         ],
-      )
+      ),
     );
-    throw UnimplementedError();
   }
 }
