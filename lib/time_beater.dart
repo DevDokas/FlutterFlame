@@ -1,18 +1,19 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_flame/components/dash_button.dart';
-import 'package:flutter_flame/components/down_button.dart';
-import 'package:flutter_flame/components/jump_button.dart';
-import 'package:flutter_flame/components/player.dart';
-import 'package:flutter_flame/components/level.dart';
+import 'package:time_beater/components/dash_button.dart';
+import 'package:time_beater/components/down_button.dart';
+import 'package:time_beater/components/jump_button.dart';
+import 'package:time_beater/components/pause_button.dart';
+import 'package:time_beater/components/player.dart';
+import 'package:time_beater/components/level.dart';
 
-class PixelAdventure extends FlameGame
+class TimeBeater extends FlameGame
     with HasKeyboardHandlerComponents,
         DragCallbacks,
         HasCollisionDetection,
@@ -21,14 +22,22 @@ class PixelAdventure extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
-  Player player = Player(character: "Mask Dude");
+  Player player = Player(character: "Ninja Frog");
+
   late JoystickComponent joystick;
 
-  double playerX = 0;
-  double playerY = 0;
+  //Ads
+  String admobOverlayIdentifier = 'AdmobBanner';
+
+  //MainMenu
+  String mainMenuOverlayIdentifier = 'MainMenu';
+  bool inMainMenu = true;
 
   // False = Keyboard || True = Touch
-  bool showControls = false;
+  bool showControls = true;
+
+  //Cam variable
+  double cameraSpeed = 100; //controls how much smoothness you want
 
   List<String> levelNames = [
     "Level-01",
@@ -43,23 +52,21 @@ class PixelAdventure extends FlameGame
 
     _loadLevel();
 
-    if (showControls) {
-      addJoystick();
-      add(JumpButton());
-      add(DownButton());
-      add(DashButton());
+    // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
+    if (inMainMenu) {
+      overlays.add(mainMenuOverlayIdentifier);
+      paused = true;
     }
+
+
+
+    _addTouchControls();
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
-
-    playerX = player.x;
-    playerY = player.y;
-
-    print(playerX);
 
     if (showControls) {
       updateJoystick();
@@ -114,24 +121,12 @@ class PixelAdventure extends FlameGame
     }
   }
 
-  void _loadCamera(World world) {
-
-    cam = CameraComponent.withFixedResolution(
-        world: world,
-        width: 640,
-        height: 360
-    );
-    cam.viewfinder.anchor = Anchor.topLeft;
-    //cam.viewfinder.position = Vector2(playerX, playerY);
-
-
-    addAll([cam, world]);
-  }
-
   void _loadLevel() {
     if (player.parent != null) {
-      player.removeFromParent();
+      removeAll(children);
+      _addTouchControls();
     }
+
     Future.delayed(const Duration(seconds: 1), () {
 
       Level world = Level(
@@ -139,9 +134,26 @@ class PixelAdventure extends FlameGame
         player: player,
       );
 
+      cam = CameraComponent.withFixedResolution(
+        world: world,
+        width: 320,
+        height: 180,
+      );
 
-      _loadCamera(world);
+      cam.follow(player, maxSpeed: cameraSpeed, snap: true);
+
+      addAll([cam, world]);
 
     });
+  }
+
+  _addTouchControls() {
+    if (showControls) {
+      addJoystick();
+      add(JumpButton());
+      add(DownButton());
+      add(DashButton());
+      add(PauseButton());
+    }
   }
 }

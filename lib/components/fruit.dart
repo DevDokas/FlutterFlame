@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_flame/components/custom_hitbox.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/components/custom_hitbox.dart';
+import 'package:time_beater/time_beater.dart';
 
 class Fruit extends SpriteAnimationComponent
-    with HasGameRef<PixelAdventure>, CollisionCallbacks{
+    with HasGameRef<TimeBeater>, CollisionCallbacks{
   final String fruit;
   Fruit({
     this.fruit = "Apple",

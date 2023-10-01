@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_flame/components/checkpoint.dart';
-import 'package:flutter_flame/components/custom_hitbox.dart';
-import 'package:flutter_flame/components/movable_platform.dart';
-import 'package:flutter_flame/components/saw.dart';
-import 'package:flutter_flame/components/spikes.dart';
-import 'package:flutter_flame/components/utils.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/components/checkpoint.dart';
+import 'package:time_beater/components/custom_hitbox.dart';
+import 'package:time_beater/components/movable_platform.dart';
+import 'package:time_beater/components/saw.dart';
+import 'package:time_beater/components/spikes.dart';
+import 'package:time_beater/components/utils.dart';
+import 'package:time_beater/time_beater.dart';
 
 import 'collision_block.dart';
 import 'fruit.dart';
@@ -26,12 +26,14 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<PixelAdventure>, KeyboardHandler, CollisionCallbacks {
+    with HasGameRef<TimeBeater>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
     position,
     this.character = 'Ninja Frog',
   }) : super(position: position);
+
+  late CameraComponent cam;
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
@@ -134,12 +136,9 @@ class Player extends SpriteAnimationGroupComponent
 
     if (isLeftKeyPressed) {
       isGoingLeft = true;
-      print("esquerda");
-      print(isGoingLeft);
+
     } else {
       isGoingLeft = false;
-      print("direita");
-      print(isGoingRight);
     }
     if(isRightKeyPressed) {
       isGoingRight = true;
@@ -155,8 +154,10 @@ class Player extends SpriteAnimationGroupComponent
 
     if (isShiftKeyPressed) {
       isRunning = true;
+      game.cam.follow(this, maxSpeed: 1, snap: true);
     } else {
       isRunning = false;
+      game.cam.follow(this, maxSpeed: 0.1, snap: true);
     }
 
     return super.onKeyEvent(event, keysPressed);
@@ -196,6 +197,9 @@ class Player extends SpriteAnimationGroupComponent
             current = PlayerState.idle;
           }
 
+        } else {
+          position.y = other.y - 32;
+          position.x = other.x;
         }
       }
     }
@@ -350,6 +354,17 @@ class Player extends SpriteAnimationGroupComponent
       isFacingLeft = false;
       isFacingRight = true;
       flipHorizontallyAroundCenter();
+    }
+
+    if (scale.x > 0) {
+      game.cam.viewfinder.position = Vector2(x + 15, y);
+      game.cam.follow(this, maxSpeed: 0.1);
+    } else if (scale.x < 0) {
+      game.cam.viewfinder.position = Vector2(x - 15, y);
+      game.cam.follow(this, maxSpeed: 0.1);
+    } else {
+      game.cam.viewfinder.position = Vector2(x + 15, y);
+      game.cam.follow(this, maxSpeed: 0.1);
     }
 
     if(velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;

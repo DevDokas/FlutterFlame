@@ -17,7 +17,7 @@ class BackgroundTile extends ParallaxComponent{
   @override
   FutureOr<void> onLoad() async {
     priority = -10;
-    size = Vector2.all(64);
+    //size = Vector2.all(64);
     parallax = await gameRef.loadParallax(
       [ParallaxImageData('Background/$color.png')],
       baseVelocity: Vector2(0, -scrollSpeed),

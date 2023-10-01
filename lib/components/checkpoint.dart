@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_flame/components/player.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/components/player.dart';
+import 'package:time_beater/time_beater.dart';
 
 import 'custom_hitbox.dart';
 
-class Checkpoint extends SpriteAnimationComponent with HasGameRef<PixelAdventure>, CollisionCallbacks {
+class Checkpoint extends SpriteAnimationComponent with HasGameRef<TimeBeater>, CollisionCallbacks {
   int nextLevel;
 
   Checkpoint({
@@ -58,6 +58,7 @@ class Checkpoint extends SpriteAnimationComponent with HasGameRef<PixelAdventure
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       _reachedCheckpoint();
+      reachedCheckpoint();
     }
     super.onCollisionStart(intersectionPoints, other);
   }
@@ -84,5 +85,10 @@ class Checkpoint extends SpriteAnimationComponent with HasGameRef<PixelAdventure
           loop: true,
         )
     );
+  }
+
+  void reachedCheckpoint() {
+    Future.delayed(const Duration(seconds: 1));
+    game.cam.stop();
   }
 }

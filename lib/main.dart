@@ -2,7 +2,9 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/screens/home_screen.dart';
+import 'package:time_beater/screens/pause_screen.dart';
+import 'package:time_beater/time_beater.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import 'config/Admob/AdmobBanner.dart';
@@ -35,20 +37,23 @@ class MyAppState extends State<MyApp> {
     // Load ads.
   }
 
-  PixelAdventure game = PixelAdventure();
+  TimeBeater game = TimeBeater();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            GameWidget(game: kDebugMode ? PixelAdventure() : game),
-            const AdmobBanner(),
-          ],
-        ),
-      ),
+    return GameWidget(
+      game: kDebugMode ? TimeBeater() : game,
+      overlayBuilderMap: {
+        'MainMenu': (BuildContext context, TimeBeater game) {
+          return HomeScreen(game);
+        },
+        'PauseMenu': (BuildContext context, TimeBeater game) {
+          return PauseScreen(game);
+        },
+        'AdmobBanner': (BuildContext context, TimeBeater game) {
+          return const AdmobBanner();
+        },
+      },
     );
     throw UnimplementedError();
   }
