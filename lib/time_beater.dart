@@ -6,13 +6,14 @@ import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_flame/components/dash_button.dart';
-import 'package:flutter_flame/components/down_button.dart';
-import 'package:flutter_flame/components/jump_button.dart';
-import 'package:flutter_flame/components/player.dart';
-import 'package:flutter_flame/components/level.dart';
+import 'package:time_beater/components/dash_button.dart';
+import 'package:time_beater/components/down_button.dart';
+import 'package:time_beater/components/jump_button.dart';
+import 'package:time_beater/components/pause_button.dart';
+import 'package:time_beater/components/player.dart';
+import 'package:time_beater/components/level.dart';
 
-class PixelAdventure extends FlameGame
+class TimeBeater extends FlameGame
     with HasKeyboardHandlerComponents,
         DragCallbacks,
         HasCollisionDetection,
@@ -29,7 +30,7 @@ class PixelAdventure extends FlameGame
   bool showControls = true;
 
   //Cam variable
-  double cameraSpeed = 125; //controls how much smoothness you want
+  double cameraSpeed = 100; //controls how much smoothness you want
 
   List<String> levelNames = [
     "Level-01",
@@ -130,9 +131,7 @@ class PixelAdventure extends FlameGame
         height: 180,
       );
 
-      cam.viewfinder.anchor = Anchor.center;
-      //cam.viewport.camera.moveBy(Vector2(player.x, player.y));
-      cam.follow(player, maxSpeed: cameraSpeed, snap: false);
+      cam.follow(player, maxSpeed: cameraSpeed, snap: true);
 
       addAll([cam, world]);
 
@@ -145,6 +144,7 @@ class PixelAdventure extends FlameGame
       add(JumpButton());
       add(DownButton());
       add(DashButton());
+      add(PauseButton());
     }
   }
 }

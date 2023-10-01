@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/time_beater.dart';
 
-class Saw extends SpriteAnimationComponent with HasGameRef<PixelAdventure>{
+class Saw extends SpriteAnimationComponent with HasGameRef<TimeBeater>{
   final bool isVertical;
   final double offNeg;
   final double offPos;

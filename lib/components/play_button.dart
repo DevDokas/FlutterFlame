@@ -2,23 +2,26 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:time_beater/components/pause_button.dart';
 import 'package:time_beater/time_beater.dart';
 
-class DashButton extends SpriteComponent
+class PlayButton extends SpriteComponent
     with HasGameRef<TimeBeater>,
         TapCallbacks {
 
-  DashButton();
+  PlayButton();
 
   final margin = 32;
   final buttonSize = 64;
 
+  final pauseOverlayIdentifier = 'PauseMenu';
+
   @override
   FutureOr<void> onLoad() {
     priority = 10;
-    sprite = Sprite(game.images.fromCache('HUD/DashButton.png'));
+    sprite = Sprite(game.images.fromCache('HUD/PlayButton.png'));
     position = Vector2(
-      game.size.x - margin - buttonSize,
+      game.size.x - (margin * 8) - (buttonSize * 9),
       game.size.y- (margin * 4) - (buttonSize * 4),
     );
 
@@ -27,13 +30,15 @@ class DashButton extends SpriteComponent
 
   @override
   void onTapDown(TapDownEvent event) {
-    game.player.isRunning = true;
+    game.overlays.remove(pauseOverlayIdentifier);
+    game.paused = false;
     super.onTapDown(event);
   }
 
   @override
   void onTapUp(TapUpEvent event) {
-    game.player.isRunning = false;
+    game.remove(this);
+    game.add(PauseButton());
     super.onTapUp(event);
   }
 }

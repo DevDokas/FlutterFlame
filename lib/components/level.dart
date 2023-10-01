@@ -2,18 +2,18 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame_tiled/flame_tiled.dart';
-import 'package:flutter_flame/components/background_tile.dart';
-import 'package:flutter_flame/components/checkpoint.dart';
-import 'package:flutter_flame/components/collision_block.dart';
-import 'package:flutter_flame/components/fruit.dart';
-import 'package:flutter_flame/components/saw.dart';
-import 'package:flutter_flame/components/spikes.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/components/background_tile.dart';
+import 'package:time_beater/components/checkpoint.dart';
+import 'package:time_beater/components/collision_block.dart';
+import 'package:time_beater/components/fruit.dart';
+import 'package:time_beater/components/saw.dart';
+import 'package:time_beater/components/spikes.dart';
+import 'package:time_beater/time_beater.dart';
 
 import 'movable_platform.dart';
 import 'player.dart';
 
-class Level extends World with HasGameRef<PixelAdventure>{
+class Level extends World with HasGameRef<TimeBeater>{
   final String levelName;
   final Player player;
   Level({required this.levelName, required this.player});
@@ -27,7 +27,7 @@ class Level extends World with HasGameRef<PixelAdventure>{
 
     add(level);
 
-    _scrollingBackground();
+    //_scrollingBackground();
     _spawningObjects();
     _addCollisions();
 

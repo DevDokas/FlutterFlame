@@ -55,7 +55,7 @@ class BannerExampleState extends State<AdmobBanner> {
   @override
   Widget build(BuildContext context) {
     return Align(
-      alignment: Alignment.bottomCenter,
+      alignment: Alignment.topCenter,
       child: SafeArea(
         child: SizedBox(
           width: _bannerAd!.size.width.toDouble(),

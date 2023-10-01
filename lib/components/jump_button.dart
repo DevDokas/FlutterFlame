@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/time_beater.dart';
 
 class JumpButton extends SpriteComponent
-    with HasGameRef<PixelAdventure>,
+    with HasGameRef<TimeBeater>,
         TapCallbacks {
 
   JumpButton();
