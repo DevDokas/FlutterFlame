@@ -3,12 +3,13 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_flame/components/checkpoint.dart';
-import 'package:flutter_flame/components/custom_hitbox.dart';
-import 'package:flutter_flame/components/saw.dart';
-import 'package:flutter_flame/components/spikes.dart';
-import 'package:flutter_flame/components/utils.dart';
-import 'package:flutter_flame/pixel_adventure.dart';
+import 'package:time_beater/components/checkpoint.dart';
+import 'package:time_beater/components/custom_hitbox.dart';
+import 'package:time_beater/components/movable_platform.dart';
+import 'package:time_beater/components/saw.dart';
+import 'package:time_beater/components/spikes.dart';
+import 'package:time_beater/components/utils.dart';
+import 'package:time_beater/time_beater.dart';
 
 import 'collision_block.dart';
 import 'fruit.dart';
@@ -25,12 +26,14 @@ enum PlayerState {
 }
 
 class Player extends SpriteAnimationGroupComponent
-    with HasGameRef<PixelAdventure>, KeyboardHandler, CollisionCallbacks {
+    with HasGameRef<TimeBeater>, KeyboardHandler, CollisionCallbacks {
   String character;
   Player({
     position,
-    this.character = 'Ninja Frog',
+    this.character = 'Mask Dude',
   }) : super(position: position);
+
+  late CameraComponent cam;
 
   late final SpriteAnimation idleAnimation;
   late final SpriteAnimation runningAnimation;
@@ -68,6 +71,7 @@ class Player extends SpriteAnimationGroupComponent
   bool hasReachedCheckpoint = false;
   bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
+
   CustomHitbox hitbox = CustomHitbox(
       offsetX: 10,
       offsetY: 4,
@@ -133,12 +137,9 @@ class Player extends SpriteAnimationGroupComponent
 
     if (isLeftKeyPressed) {
       isGoingLeft = true;
-      print("esquerda");
-      print(isGoingLeft);
+
     } else {
       isGoingLeft = false;
-      print("direita");
-      print(isGoingRight);
     }
     if(isRightKeyPressed) {
       isGoingRight = true;
@@ -154,8 +155,10 @@ class Player extends SpriteAnimationGroupComponent
 
     if (isShiftKeyPressed) {
       isRunning = true;
+      game.cam.follow(this, maxSpeed: 1, snap: true);
     } else {
       isRunning = false;
+      game.cam.follow(this, maxSpeed: 0.1, snap: true);
     }
 
     return super.onKeyEvent(event, keysPressed);
@@ -169,8 +172,55 @@ class Player extends SpriteAnimationGroupComponent
       if (other is Spikes) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
     }
-
     super.onCollisionStart(intersectionPoints, other);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    if(!hasReachedCheckpoint) {
+      if (other is MovablePlatform) {
+        if (other.isVertical) {
+          position.y = other.y - 32;
+
+          if (hasJumped) {
+            if (velocity.y < 0) {
+              velocity.y = -_jumpForce * 2;
+            } else {
+              velocity.y = -_jumpForce;
+            }
+            position.y += velocity.y * fixedDeltaTime;
+            isOnGround = false;
+          }
+
+          if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
+            current = PlayerState.running;
+          } else if(velocity.x == 0) {
+            current = PlayerState.idle;
+          }
+
+        } else {
+          double platformVelocityX = other.velocity.x;
+          // Ajuste a posição vertical do jogador para ficar em cima da plataforma
+          position.y = other.y - size.y;
+
+          // Ajuste a posição horizontal do jogador para acompanhar a plataforma
+          // Use a diferença entre a posição da plataforma e a posição anterior do jogador
+          position.x += other.velocity.x * fixedDeltaTime;
+
+          // Atualize a escala do jogador conforme necessário
+          if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
+            current = PlayerState.running;
+          } else if (velocity.x == 0) {
+            current = PlayerState.idle;
+          }
+
+          // Indique que o jogador está no chão
+          isOnGround = true;
+
+        }
+      }
+    }
+    super.onCollision(intersectionPoints, other);
   }
 
   void _loadAllAnimations() {
@@ -323,6 +373,17 @@ class Player extends SpriteAnimationGroupComponent
       flipHorizontallyAroundCenter();
     }
 
+    if (scale.x > 0) {
+      game.cam.viewfinder.position = Vector2(x + 15, y);
+      game.cam.follow(this, maxSpeed: 0.1);
+    } else if (scale.x < 0) {
+      game.cam.viewfinder.position = Vector2(x - 15, y);
+      game.cam.follow(this, maxSpeed: 0.1);
+    } else {
+      game.cam.viewfinder.position = Vector2(x + 15, y);
+      game.cam.follow(this, maxSpeed: 0.1);
+    }
+
     if(velocity.x > 0 || velocity.x < 0) playerState = PlayerState.running;
 
     //check if falling set to falling
@@ -440,11 +501,12 @@ class Player extends SpriteAnimationGroupComponent
 
     current = PlayerState.finishedLevel;
 
-    Future.delayed(const Duration(milliseconds: 350), (){
+    Future.delayed(const Duration(seconds: 2), (){
+      game.overlays.add(game.loadingScreenOverlayIdentifier);
       hasReachedCheckpoint = false;
       position = Vector2.all(-640);
 
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 1), () {
         game.loadNextLevel();
       });
     });

@@ -1,17 +1,22 @@
 import 'dart:async';
-import 'dart:ui';
+import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
 import 'package:flutter/painting.dart';
-import 'package:flutter_flame/components/down_button.dart';
-import 'package:flutter_flame/components/jump_button.dart';
-import 'package:flutter_flame/components/player.dart';
-import 'package:flutter_flame/components/level.dart';
+import 'package:time_beater/components/dash_button.dart';
+import 'package:time_beater/components/down_button.dart';
+import 'package:time_beater/components/jump_button.dart';
+import 'package:time_beater/components/pause_button.dart';
+import 'package:time_beater/components/player.dart';
+import 'package:time_beater/components/level.dart';
 
-class PixelAdventure extends FlameGame
+import 'data/player_data.dart';
+
+class TimeBeater extends FlameGame
     with HasKeyboardHandlerComponents,
         DragCallbacks,
         HasCollisionDetection,
@@ -20,16 +25,36 @@ class PixelAdventure extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
-  Player player = Player(character: "Mask Dude");
+  late PlayerData playerData;
+  Player player = Player();
+
+
   late JoystickComponent joystick;
+
+  //Ads
+  String admobOverlayIdentifier = 'AdmobBanner';
+
+  //MainMenu
+  String mainMenuOverlayIdentifier = 'MainMenu';
+  bool inMainMenu = true;
+
+  //CharacterSelection
+  String characterSelectionOverlayIdentifier = 'CharacterSelection';
+  bool inCharacterSelection = false;
+
+  //LoadingScreen
+  String loadingScreenOverlayIdentifier = 'LoadScreen';
+  bool inLoadScreen = false;
 
   // False = Keyboard || True = Touch
   bool showControls = true;
 
+  //Cam variable
+  double cameraSpeed = 100; //controls how much smoothness you want
+
   List<String> levelNames = [
     "Level-01",
     "Level-02",
-    "Level-03"
   ];
   int currentLevelIndex = 0;
 
@@ -38,19 +63,25 @@ class PixelAdventure extends FlameGame
     //load all images into cache
     await images.loadAllImages();
 
-    _loadLevel();
+    // Load the level
+    //loadLevel();
 
-    if (showControls) {
-      addJoystick();
-      add(JumpButton());
-      add(DownButton());
+    // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
+    if (inMainMenu) {
+      overlays.add(mainMenuOverlayIdentifier);
+      paused = true;
     }
+
+
+
+    _addTouchControls();
 
     return super.onLoad();
   }
 
   @override
   void update(double dt) {
+
     if (showControls) {
       updateJoystick();
     }
@@ -76,10 +107,6 @@ class PixelAdventure extends FlameGame
     add(joystick);
   }
 
-/*  void addJumpButton() {
-    jumpButton =
-  }*/
-
   void updateJoystick() {
     switch (joystick.direction) {
       case JoystickDirection.left:
@@ -101,8 +128,14 @@ class PixelAdventure extends FlameGame
 
   loadNextLevel() {
     if(currentLevelIndex < levelNames.length - 1) {
+      final random = Random();
+      int randomNum = random.nextInt(1002) + 1000 - 1;
+      print(randomNum);
       currentLevelIndex++;
       _loadLevel();
+      Future.delayed(Duration(milliseconds: randomNum), () {
+        overlays.remove(loadingScreenOverlayIdentifier);
+      });
     } else {
       //no more levels
     }
@@ -110,22 +143,37 @@ class PixelAdventure extends FlameGame
 
   void _loadLevel() {
     if (player.parent != null) {
-      player.removeFromParent();
+      removeAll(children);
+      _addTouchControls();
     }
+
     Future.delayed(const Duration(seconds: 1), () {
+
       Level world = Level(
         levelName: levelNames[currentLevelIndex],
         player: player,
       );
 
       cam = CameraComponent.withFixedResolution(
-          world: world,
-          width: 640,
-          height: 360
+        world: world,
+        width: 320,
+        height: 180,
       );
-      cam.viewfinder.anchor = Anchor.topLeft;
+
+      cam.follow(player, maxSpeed: cameraSpeed, snap: true);
 
       addAll([cam, world]);
+
     });
+  }
+
+  _addTouchControls() {
+    if (showControls) {
+      addJoystick();
+      add(JumpButton());
+      add(DownButton());
+      add(DashButton());
+      add(PauseButton());
+    }
   }
 }

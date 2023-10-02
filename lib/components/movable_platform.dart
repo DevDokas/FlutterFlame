@@ -4,12 +4,17 @@ import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:time_beater/time_beater.dart';
 
-class Saw extends SpriteAnimationComponent with HasGameRef<TimeBeater>{
+import 'custom_hitbox.dart';
+
+class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
   final bool isVertical;
+  final int numOfPlatforms;
   final double offNeg;
   final double offPos;
-  Saw({
+  Vector2 velocity = Vector2.zero();
+  MovablePlatform({
     this.isVertical = false,
+    this.numOfPlatforms = 0,
     this.offNeg = 0,
     this.offPos = 0,
     position,
@@ -18,18 +23,26 @@ class Saw extends SpriteAnimationComponent with HasGameRef<TimeBeater>{
       position: position,
       size: size
   );
-  static const double sawSpeed = 0.03;
   static const moveSpeed = 50;
   static const tileSize = 16;
 
   double moveDirection = 1;
   double rangeNeg = 0;
   double rangePos = 0;
+  String platformSprite = "";
+
+  CustomHitbox hitbox = CustomHitbox(
+      offsetX: 0,
+      offsetY: 0,
+      width: 16,
+      height: 16
+  );
 
   @override
   FutureOr<void> onLoad() {
     priority = -1;
-    add(CircleHitbox());
+
+    add(RectangleHitbox());
     //debugMode = true;
 
     if (isVertical) {
@@ -40,14 +53,26 @@ class Saw extends SpriteAnimationComponent with HasGameRef<TimeBeater>{
       rangePos = position.x + offPos * tileSize;
     }
 
-    animation = SpriteAnimation.fromFrameData(
-        game.images.fromCache('Traps/Saw/On (38x38).png'),
-        SpriteAnimationData.sequenced(
-            amount: 8,
-            stepTime: sawSpeed,
-            textureSize: Vector2.all(38),
-        ),
-    );
+    if (numOfPlatforms == 2) {
+      platformSprite = 'Terrain/Platform(2blocks).png';
+    } else if (numOfPlatforms == 3) {
+      platformSprite = 'Terrain/Platform(3blocks).png';
+    } else if (numOfPlatforms == 4) {
+      platformSprite = 'Terrain/Platform(4blocks).png';
+    } else {
+      platformSprite = 'Terrain/Platform(2blocks).png';
+    }
+
+    sprite = Sprite(game.images.fromCache(platformSprite));
+
+/*    animation = SpriteAnimation.fromFrameData(
+      game.images.fromCache(platformSprite),
+      SpriteAnimationData.sequenced(
+        amount: 1,
+        stepTime: 1,
+        textureSize: Vector2(hitbox.width, hitbox.height),
+      ),
+    );*/
     return super.onLoad();
   }
 
@@ -73,10 +98,13 @@ class Saw extends SpriteAnimationComponent with HasGameRef<TimeBeater>{
 
   void _moveHorizontally(double dt) {
     if(position.x >= rangePos) {
+      velocity.x = -moveSpeed.toDouble();
       moveDirection = -1;
     } else if (position.x <= rangeNeg) {
+      velocity.x = moveSpeed.toDouble();
       moveDirection = 1;
     }
-    position.x += moveDirection * moveSpeed * dt;
+    //position.x += moveDirection * moveSpeed * dt;
+    position.x += velocity.x * dt;
   }
 }

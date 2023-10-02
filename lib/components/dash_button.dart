@@ -4,11 +4,11 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:time_beater/time_beater.dart';
 
-class JumpButton extends SpriteComponent
+class DashButton extends SpriteComponent
     with HasGameRef<TimeBeater>,
         TapCallbacks {
 
-  JumpButton();
+  DashButton();
 
   final margin = 32;
   final buttonSize = 64;
@@ -16,10 +16,10 @@ class JumpButton extends SpriteComponent
   @override
   FutureOr<void> onLoad() {
     priority = 10;
-    sprite = Sprite(game.images.fromCache('HUD/JumpButton.png'));
+    sprite = Sprite(game.images.fromCache('HUD/DashButton.png'));
     position = Vector2(
-        game.size.x - margin - buttonSize,
-        game.size.y- (margin * 2) - (buttonSize * 2),
+      game.size.x - margin - buttonSize,
+      game.size.y- (margin * 4) - (buttonSize * 4),
     );
 
     return super.onLoad();
@@ -27,13 +27,13 @@ class JumpButton extends SpriteComponent
 
   @override
   void onTapDown(TapDownEvent event) {
-    game.player.hasJumped = true;
+    game.player.isRunning = true;
     super.onTapDown(event);
   }
 
   @override
   void onTapUp(TapUpEvent event) {
-    game.player.hasJumped = false;
+    game.player.isRunning = false;
     super.onTapUp(event);
   }
 }
