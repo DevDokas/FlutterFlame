@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
@@ -13,6 +14,8 @@ import 'package:time_beater/components/pause_button.dart';
 import 'package:time_beater/components/player.dart';
 import 'package:time_beater/components/level.dart';
 
+import 'data/player_data.dart';
+
 class TimeBeater extends FlameGame
     with HasKeyboardHandlerComponents,
         DragCallbacks,
@@ -22,7 +25,9 @@ class TimeBeater extends FlameGame
   @override
   Color backgroundColor() => const Color(0xFF211F30);
   late CameraComponent cam;
-  Player player = Player(character: "Ninja Frog");
+  late PlayerData playerData;
+  Player player = Player();
+
 
   late JoystickComponent joystick;
 
@@ -32,6 +37,14 @@ class TimeBeater extends FlameGame
   //MainMenu
   String mainMenuOverlayIdentifier = 'MainMenu';
   bool inMainMenu = true;
+
+  //CharacterSelection
+  String characterSelectionOverlayIdentifier = 'CharacterSelection';
+  bool inCharacterSelection = false;
+
+  //LoadingScreen
+  String loadingScreenOverlayIdentifier = 'LoadScreen';
+  bool inLoadScreen = false;
 
   // False = Keyboard || True = Touch
   bool showControls = true;
@@ -50,7 +63,8 @@ class TimeBeater extends FlameGame
     //load all images into cache
     await images.loadAllImages();
 
-    _loadLevel();
+    // Load the level
+    //loadLevel();
 
     // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
     if (inMainMenu) {
@@ -114,8 +128,14 @@ class TimeBeater extends FlameGame
 
   loadNextLevel() {
     if(currentLevelIndex < levelNames.length - 1) {
+      final random = Random();
+      int randomNum = random.nextInt(1002) + 1000 - 1;
+      print(randomNum);
       currentLevelIndex++;
       _loadLevel();
+      Future.delayed(Duration(milliseconds: randomNum), () {
+        overlays.remove(loadingScreenOverlayIdentifier);
+      });
     } else {
       //no more levels
     }

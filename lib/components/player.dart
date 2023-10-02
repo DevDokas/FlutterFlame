@@ -30,7 +30,7 @@ class Player extends SpriteAnimationGroupComponent
   String character;
   Player({
     position,
-    this.character = 'Ninja Frog',
+    this.character = 'Mask Dude',
   }) : super(position: position);
 
   late CameraComponent cam;
@@ -71,6 +71,7 @@ class Player extends SpriteAnimationGroupComponent
   bool hasReachedCheckpoint = false;
   bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
+
   CustomHitbox hitbox = CustomHitbox(
       offsetX: 10,
       offsetY: 4,
@@ -198,8 +199,24 @@ class Player extends SpriteAnimationGroupComponent
           }
 
         } else {
-          position.y = other.y - 32;
-          position.x = other.x;
+          double platformVelocityX = other.velocity.x;
+          // Ajuste a posição vertical do jogador para ficar em cima da plataforma
+          position.y = other.y - size.y;
+
+          // Ajuste a posição horizontal do jogador para acompanhar a plataforma
+          // Use a diferença entre a posição da plataforma e a posição anterior do jogador
+          position.x += other.velocity.x * fixedDeltaTime;
+
+          // Atualize a escala do jogador conforme necessário
+          if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
+            current = PlayerState.running;
+          } else if (velocity.x == 0) {
+            current = PlayerState.idle;
+          }
+
+          // Indique que o jogador está no chão
+          isOnGround = true;
+
         }
       }
     }
@@ -484,11 +501,12 @@ class Player extends SpriteAnimationGroupComponent
 
     current = PlayerState.finishedLevel;
 
-    Future.delayed(const Duration(milliseconds: 350), (){
+    Future.delayed(const Duration(seconds: 2), (){
+      game.overlays.add(game.loadingScreenOverlayIdentifier);
       hasReachedCheckpoint = false;
       position = Vector2.all(-640);
 
-      Future.delayed(const Duration(seconds: 3), () {
+      Future.delayed(const Duration(seconds: 1), () {
         game.loadNextLevel();
       });
     });
