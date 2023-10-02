@@ -10,26 +10,32 @@ class HomeScreen extends StatelessWidget {
 
   void startGame() {
     game.overlays.remove(game.mainMenuOverlayIdentifier);
-    game.overlays.add(game.admobOverlayIdentifier);
+    game.overlays.add(game.characterSelectionOverlayIdentifier);
+    //game.overlays.add(game.admobOverlayIdentifier);
     game.inMainMenu = false;
-    game.paused = false;
+    game.inCharacterSelection = true;
+    //game.paused = false;
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+
     return Align(
       child: Stack(
         children: [
           Image.asset(
             'assets/images/HUD/MainMenu.png',
             fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+            width: screenWidth - 10,
+            height: screenHeight - 10,
             alignment: Alignment.center,
           ),
           Container(
-            height: double.infinity,
-            width: double.infinity,
+            height: screenHeight,
+            width: screenWidth,
             padding: const EdgeInsets.all(50),
             decoration: BoxDecoration(
               color: Colors.transparent,

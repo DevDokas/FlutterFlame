@@ -2,7 +2,9 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:time_beater/screens/character_selection_screen.dart';
 import 'package:time_beater/screens/home_screen.dart';
+import 'package:time_beater/screens/load_screen.dart';
 import 'package:time_beater/screens/pause_screen.dart';
 import 'package:time_beater/time_beater.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -44,8 +46,14 @@ class MyAppState extends State<MyApp> {
     return GameWidget(
       game: kDebugMode ? TimeBeater() : game,
       overlayBuilderMap: {
+        'LoadScreen': (BuildContext context, TimeBeater game) {
+          return LoadScreen(game);
+        },
         'MainMenu': (BuildContext context, TimeBeater game) {
           return HomeScreen(game);
+        },
+        'CharacterSelection': (BuildContext context, TimeBeater game) {
+          return CharacterSelectionScreen(game);
         },
         'PauseMenu': (BuildContext context, TimeBeater game) {
           return PauseScreen(game);

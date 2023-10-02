@@ -11,6 +11,7 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
   final int numOfPlatforms;
   final double offNeg;
   final double offPos;
+  Vector2 velocity = Vector2.zero();
   MovablePlatform({
     this.isVertical = false,
     this.numOfPlatforms = 0,
@@ -97,10 +98,13 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
 
   void _moveHorizontally(double dt) {
     if(position.x >= rangePos) {
+      velocity.x = -moveSpeed.toDouble();
       moveDirection = -1;
     } else if (position.x <= rangeNeg) {
+      velocity.x = moveSpeed.toDouble();
       moveDirection = 1;
     }
-    position.x += moveDirection * moveSpeed * dt;
+    //position.x += moveDirection * moveSpeed * dt;
+    position.x += velocity.x * dt;
   }
 }

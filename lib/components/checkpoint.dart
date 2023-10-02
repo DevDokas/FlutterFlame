@@ -49,16 +49,9 @@ class Checkpoint extends SpriteAnimationComponent with HasGameRef<TimeBeater>, C
   }
 
   @override
-  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-
-    super.onCollision(intersectionPoints, other);
-  }
-
-  @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if (other is Player) {
       _reachedCheckpoint();
-      reachedCheckpoint();
     }
     super.onCollisionStart(intersectionPoints, other);
   }
@@ -85,10 +78,5 @@ class Checkpoint extends SpriteAnimationComponent with HasGameRef<TimeBeater>, C
           loop: true,
         )
     );
-  }
-
-  void reachedCheckpoint() {
-    Future.delayed(const Duration(seconds: 1));
-    game.cam.stop();
   }
 }
