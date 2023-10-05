@@ -198,6 +198,9 @@ class Player extends SpriteAnimationGroupComponent
             current = PlayerState.idle;
           }
 
+          // Indique que o jogador está no chão
+          isOnGround = true;
+
         } else {
           double platformVelocityX = other.velocity.x;
           // Ajuste a posição vertical do jogador para ficar em cima da plataforma

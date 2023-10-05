@@ -6,7 +6,11 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
+import 'package:flame_bloc/flame_bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
+import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/components/chronometer.dart';
 import 'package:time_beater/components/dash_button.dart';
 import 'package:time_beater/components/down_button.dart';
 import 'package:time_beater/components/jump_button.dart';
@@ -21,6 +25,8 @@ class TimeBeater extends FlameGame
         DragCallbacks,
         HasCollisionDetection,
         TapCallbacks {
+  TimeBeater({super.children, super.world, super.camera, super.oldCamera, required this.chronometerBloc});
+
 
   @override
   Color backgroundColor() => const Color(0xFF211F30);
@@ -34,6 +40,9 @@ class TimeBeater extends FlameGame
   //Ads
   String admobOverlayIdentifier = 'AdmobBanner';
 
+  //HUD Layout
+  String hudOverlayIdentifier = 'HUDScreen';
+
   //MainMenu
   String mainMenuOverlayIdentifier = 'MainMenu';
   bool inMainMenu = true;
@@ -46,11 +55,16 @@ class TimeBeater extends FlameGame
   String loadingScreenOverlayIdentifier = 'LoadScreen';
   bool inLoadScreen = false;
 
+  bool isGameRunning = false;
+
   // False = Keyboard || True = Touch
   bool showControls = true;
 
   //Cam variable
   double cameraSpeed = 100; //controls how much smoothness you want
+
+  //Bloc Chronometer
+  final ChronometerBloc chronometerBloc;
 
   List<String> levelNames = [
     "Level-01",
@@ -63,16 +77,28 @@ class TimeBeater extends FlameGame
     //load all images into cache
     await images.loadAllImages();
 
-    // Load the level
-    //loadLevel();
+    add(FlameBlocProvider.value(value: chronometerBloc, children: [
+
+    ]));
+
+/*    await add(
+      FlameMultiBlocProvider(
+          providers: [
+            FlameBlocProvider.value(value: chronometerBloc)
+          ],
+          children: [
+            Player(),
+          ],
+      ),
+    );*/
+
+    overlays.add(hudOverlayIdentifier);
 
     // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
     if (inMainMenu) {
       overlays.add(mainMenuOverlayIdentifier);
       paused = true;
     }
-
-
 
     _addTouchControls();
 
@@ -81,6 +107,16 @@ class TimeBeater extends FlameGame
 
   @override
   void update(double dt) {
+
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      chronometerBloc.add(RunningChronometerEvent());
+    });
+
+
+/*    seconds = chronometer.seconds.toInt();
+    milliseconds = chronometer.milliseconds;
+
+    print(milliseconds);*/
 
     if (showControls) {
       updateJoystick();

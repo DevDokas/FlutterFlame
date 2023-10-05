@@ -1,6 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flame/camera.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/components/chronometer.dart';
 
 import '../components/level.dart';
 import '../data/player_skins.dart';
@@ -10,10 +14,17 @@ class CharacterSelectionScreen extends StatelessWidget {
   final TimeBeater game;
   const CharacterSelectionScreen(this.game, {super.key});
 
+  void attChronometer(BuildContext context) {
+   game.chronometerBloc.add(RunningChronometerEvent());
+   game.overlays.remove(game.characterSelectionOverlayIdentifier);
+   game.overlays.add(game.admobOverlayIdentifier);
+   game.paused = false;
+   game.isGameRunning = true;
+  }
+
   void chooseCharacter(PlayerSkins playerSkins) {
     game.removeAll(game.children);
 
-    print(playerSkins);
     switch (playerSkins) {
       case PlayerSkins.maskDude:
         game.player.character = 'Mask Dude';
@@ -31,7 +42,11 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        game.addAll([game.cam, world]);
+        //game.addAll([game.cam, world]);
+        game.add(FlameBlocProvider.value(
+            value: game.chronometerBloc,
+            children: [game.cam, world],
+        ));
         break;
       case PlayerSkins.ninjaFrog:
         game.player.character = 'Ninja Frog';
@@ -48,7 +63,11 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        game.addAll([game.cam, world]);
+        //game.addAll([game.cam, world]);
+        game.add(FlameBlocProvider.value(
+          value: game.chronometerBloc,
+          children: [game.cam, world],
+        ));
         break;
       case PlayerSkins.pinkMan:
         game.player.character = 'Pink Man';
@@ -65,7 +84,11 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        game.addAll([game.cam, world]);
+        //game.addAll([game.cam, world]);
+        game.add(FlameBlocProvider.value(
+          value: game.chronometerBloc,
+          children: [game.cam, world],
+        ));
         break;
       case PlayerSkins.virtualGuy:
         game.player.character = 'Virtual Guy';
@@ -82,7 +105,11 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        game.addAll([game.cam, world]);
+        //game.addAll([game.cam, world]);
+        game.add(FlameBlocProvider.value(
+          value: game.chronometerBloc,
+          children: [game.cam, world],
+        ));
         break;
       default:
         game.player.character = 'Ninja Frog';
@@ -99,13 +126,13 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        game.addAll([game.cam, world]);
+        //game.addAll([game.cam, world]);
+        game.add(FlameBlocProvider.value(
+          value: game.chronometerBloc,
+          children: [game.cam, world],
+        ));
         break;
     }
-
-    game.overlays.remove(game.characterSelectionOverlayIdentifier);
-    game.overlays.add(game.admobOverlayIdentifier);
-    game.paused = false;
   }
 
   @override
@@ -126,9 +153,15 @@ class CharacterSelectionScreen extends StatelessWidget {
               child: CarouselSlider(
                 items: [
                   TextButton(
-                    onPressed: () => chooseCharacter(PlayerSkins.maskDude),
+                    onPressed: () => {
+                      attChronometer(context),
+                      chooseCharacter(PlayerSkins.maskDude)
+                    },
                     child: InkWell(
-                      onTap: () => chooseCharacter(PlayerSkins.maskDude),
+                      onTap: () => {
+                        attChronometer(context),
+                        chooseCharacter(PlayerSkins.maskDude)
+                      },
                       child: Container(
                         height: double.infinity,
                         width: 250,
@@ -161,7 +194,10 @@ class CharacterSelectionScreen extends StatelessWidget {
                   TextButton(
                     onPressed: () => chooseCharacter(PlayerSkins.ninjaFrog),
                     child: InkWell(
-                      onTap: () => chooseCharacter(PlayerSkins.ninjaFrog),
+                      onTap: () => {
+                        context.read<Chronometer>().start(),
+                        chooseCharacter(PlayerSkins.ninjaFrog)
+                      },
                       child: Container(
                         height: double.infinity,
                         width: 250,

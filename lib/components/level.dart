@@ -40,7 +40,7 @@ class Level extends World with HasGameRef<TimeBeater>{
     final backgroundLayer =
       level.tileMap.getLayer('Background');
 
-    if (backgroundLayer != null) {
+    /*if (backgroundLayer != null) {
       final backgroundColor =
         backgroundLayer.properties.getValue('BackgroundColor');
       final backgroundTile = BackgroundTile(
@@ -49,7 +49,7 @@ class Level extends World with HasGameRef<TimeBeater>{
       );
 
       add(backgroundTile);
-    }
+    }*/
   }
 
   void _spawningObjects() {

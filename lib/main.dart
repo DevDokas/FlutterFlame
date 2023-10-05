@@ -2,8 +2,12 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/components/chronometer.dart';
 import 'package:time_beater/screens/character_selection_screen.dart';
 import 'package:time_beater/screens/home_screen.dart';
+import 'package:time_beater/screens/hud_ingame_screen.dart';
 import 'package:time_beater/screens/load_screen.dart';
 import 'package:time_beater/screens/pause_screen.dart';
 import 'package:time_beater/time_beater.dart';
@@ -23,7 +27,16 @@ void main() async{
   );
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
 
-  runApp(MyApp());
+  runApp(
+    /// Providers are above [MyApp] instead of inside it, so that tests
+    /// can use [MyApp] while mocking the providers
+    MultiProvider(
+      providers: [
+        Provider(create: (_) => ChronometerBloc()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -39,13 +52,18 @@ class MyAppState extends State<MyApp> {
     // Load ads.
   }
 
-  TimeBeater game = TimeBeater();
+
 
   @override
   Widget build(BuildContext context) {
+    TimeBeater game = TimeBeater(chronometerBloc: context.read<ChronometerBloc>());
+
     return GameWidget(
-      game: kDebugMode ? TimeBeater() : game,
+      game: TimeBeater(chronometerBloc: context.read<ChronometerBloc>()),
       overlayBuilderMap: {
+        'HUDScreen': (BuildContext context, TimeBeater game) {
+          return HudIngame();
+        },
         'LoadScreen': (BuildContext context, TimeBeater game) {
           return LoadScreen(game);
         },
