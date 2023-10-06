@@ -64,15 +64,6 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
     }
 
     sprite = Sprite(game.images.fromCache(platformSprite));
-
-/*    animation = SpriteAnimation.fromFrameData(
-      game.images.fromCache(platformSprite),
-      SpriteAnimationData.sequenced(
-        amount: 1,
-        stepTime: 1,
-        textureSize: Vector2(hitbox.width, hitbox.height),
-      ),
-    );*/
     return super.onLoad();
   }
 
@@ -104,7 +95,6 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
       velocity.x = moveSpeed.toDouble();
       moveDirection = 1;
     }
-    //position.x += moveDirection * moveSpeed * dt;
     position.x += velocity.x * dt;
   }
 }

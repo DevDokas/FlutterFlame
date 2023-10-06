@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
-import 'package:time_beater/components/play_button.dart';
 import 'package:time_beater/time_beater.dart';
 
 class PauseButton extends SpriteComponent
@@ -37,7 +36,6 @@ class PauseButton extends SpriteComponent
   @override
   void onTapUp(TapUpEvent event) {
     game.remove(this);
-    //game.add(PlayButton());
     Future.delayed(const Duration(milliseconds: 100), () {
       game.paused = true;
     });

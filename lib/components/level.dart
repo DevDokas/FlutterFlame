@@ -39,17 +39,6 @@ class Level extends World with HasGameRef<TimeBeater>{
   void _scrollingBackground() {
     final backgroundLayer =
       level.tileMap.getLayer('Background');
-
-    /*if (backgroundLayer != null) {
-      final backgroundColor =
-        backgroundLayer.properties.getValue('BackgroundColor');
-      final backgroundTile = BackgroundTile(
-        color: backgroundColor ?? 'Gray',
-        position: Vector2(0, 0),
-      );
-
-      add(backgroundTile);
-    }*/
   }
 
   void _spawningObjects() {

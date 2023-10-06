@@ -1,10 +1,8 @@
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
-import 'package:time_beater/components/chronometer.dart';
 import 'package:time_beater/screens/character_selection_screen.dart';
 import 'package:time_beater/screens/home_screen.dart';
 import 'package:time_beater/screens/hud_ingame_screen.dart';
@@ -47,16 +45,7 @@ class MyApp extends StatefulWidget {
 class MyAppState extends State<MyApp> {
 
   @override
-  void initState() {
-    super.initState();
-    // Load ads.
-  }
-
-
-
-  @override
   Widget build(BuildContext context) {
-    TimeBeater game = TimeBeater(chronometerBloc: context.read<ChronometerBloc>());
 
     return GameWidget(
       game: TimeBeater(chronometerBloc: context.read<ChronometerBloc>()),
@@ -71,7 +60,7 @@ class MyAppState extends State<MyApp> {
           return HomeScreen(game);
         },
         'CharacterSelection': (BuildContext context, TimeBeater game) {
-          return CharacterSelectionScreen(game);
+          return CharacterSelectionScreen(game, hudIngame: HudIngame(),);
         },
         'PauseMenu': (BuildContext context, TimeBeater game) {
           return PauseScreen(game);
@@ -81,6 +70,5 @@ class MyAppState extends State<MyApp> {
         },
       },
     );
-    throw UnimplementedError();
   }
 }

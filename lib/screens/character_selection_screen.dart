@@ -2,9 +2,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flame/camera.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
-import 'package:time_beater/components/chronometer.dart';
+import 'package:time_beater/screens/hud_ingame_screen.dart';
 
 import '../components/level.dart';
 import '../data/player_skins.dart';
@@ -12,9 +11,11 @@ import '../time_beater.dart';
 
 class CharacterSelectionScreen extends StatelessWidget {
   final TimeBeater game;
-  const CharacterSelectionScreen(this.game, {super.key});
+  final HudIngame hudIngame;
+  const CharacterSelectionScreen(this.game, {super.key, required this.hudIngame});
 
   void attChronometer(BuildContext context) {
+
    game.chronometerBloc.add(RunningChronometerEvent());
    game.overlays.remove(game.characterSelectionOverlayIdentifier);
    game.overlays.add(game.admobOverlayIdentifier);
@@ -154,13 +155,13 @@ class CharacterSelectionScreen extends StatelessWidget {
                 items: [
                   TextButton(
                     onPressed: () => {
+                      chooseCharacter(PlayerSkins.maskDude),
                       attChronometer(context),
-                      chooseCharacter(PlayerSkins.maskDude)
                     },
                     child: InkWell(
                       onTap: () => {
+                        chooseCharacter(PlayerSkins.maskDude),
                         attChronometer(context),
-                        chooseCharacter(PlayerSkins.maskDude)
                       },
                       child: Container(
                         height: double.infinity,
@@ -192,11 +193,14 @@ class CharacterSelectionScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => chooseCharacter(PlayerSkins.ninjaFrog),
+                    onPressed: () => {
+                      chooseCharacter(PlayerSkins.ninjaFrog),
+                      attChronometer(context),
+                    },
                     child: InkWell(
                       onTap: () => {
-                        context.read<Chronometer>().start(),
-                        chooseCharacter(PlayerSkins.ninjaFrog)
+                        chooseCharacter(PlayerSkins.ninjaFrog),
+                        attChronometer(context),
                       },
                       child: Container(
                         height: double.infinity,
@@ -228,9 +232,15 @@ class CharacterSelectionScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => chooseCharacter(PlayerSkins.pinkMan),
+                    onPressed: () => {
+                      chooseCharacter(PlayerSkins.pinkMan),
+                      attChronometer(context),
+                    },
                     child: InkWell(
-                      onTap: () => chooseCharacter(PlayerSkins.pinkMan),
+                      onTap: () => {
+                        chooseCharacter(PlayerSkins.pinkMan),
+                        attChronometer(context),
+                      },
                       child: Container(
                         height: double.infinity,
                         width: 250,
@@ -261,9 +271,15 @@ class CharacterSelectionScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () => chooseCharacter(PlayerSkins.virtualGuy),
+                    onPressed: () => {
+                      chooseCharacter(PlayerSkins.virtualGuy),
+                      attChronometer(context),
+                    },
                     child: InkWell(
-                      onTap: () => chooseCharacter(PlayerSkins.virtualGuy),
+                      onTap: () => {
+                        chooseCharacter(PlayerSkins.virtualGuy),
+                        attChronometer(context),
+                      },
                       child: Container(
                         height: double.infinity,
                         width: 250,

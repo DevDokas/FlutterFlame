@@ -64,6 +64,5 @@ class BannerExampleState extends State<AdmobBanner> {
         ),
       ),
     );
-    throw UnimplementedError();
   }
 }

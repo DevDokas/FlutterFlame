@@ -10,7 +10,6 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
-import 'package:time_beater/components/chronometer.dart';
 import 'package:time_beater/components/dash_button.dart';
 import 'package:time_beater/components/down_button.dart';
 import 'package:time_beater/components/jump_button.dart';
@@ -81,17 +80,6 @@ class TimeBeater extends FlameGame
 
     ]));
 
-/*    await add(
-      FlameMultiBlocProvider(
-          providers: [
-            FlameBlocProvider.value(value: chronometerBloc)
-          ],
-          children: [
-            Player(),
-          ],
-      ),
-    );*/
-
     overlays.add(hudOverlayIdentifier);
 
     // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
@@ -111,12 +99,6 @@ class TimeBeater extends FlameGame
     Future.delayed(const Duration(milliseconds: 1000), () {
       chronometerBloc.add(RunningChronometerEvent());
     });
-
-
-/*    seconds = chronometer.seconds.toInt();
-    milliseconds = chronometer.milliseconds;
-
-    print(milliseconds);*/
 
     if (showControls) {
       updateJoystick();
