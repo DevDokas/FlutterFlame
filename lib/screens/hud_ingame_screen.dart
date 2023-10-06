@@ -28,7 +28,7 @@ class _HudIngameState extends State<HudIngame> {
 
     iniciou.value ? contador() : null;
     return Align(
-      alignment: Alignment(0.67, -0.9),
+      alignment: const Alignment(0.67, -0.9),
       child: BlocBuilder<ChronometerBloc, ChronometerState>(
         builder: (context, state) {
           if (state is RunningChronometer) {
@@ -65,10 +65,9 @@ class _HudIngameState extends State<HudIngame> {
                   return Text("${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}");
                 });
           } else {
-            // Caso padrão: exiba algo quando o estado não for reconhecido
             return RxBuilder(
                 builder: (context) {
-                  return Text("${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}");
+                  return Text("Erro ao inicializar cronometro");
                 });
           }
         },
