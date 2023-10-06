@@ -4,9 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class ChronometerEvent {
   bool isRunning;
+  bool reset;
 
   ChronometerEvent({
     required this.isRunning,
+    required this.reset
 
 });
 }
@@ -15,77 +17,87 @@ class RunningChronometerEvent extends ChronometerEvent {
   RunningChronometerEvent()
       : super(
     isRunning: true,
+    reset: false,
   );
 }
 
 class PauseChronometerEvent extends ChronometerEvent {
-  PauseChronometerEvent({
-    required bool isRunning,
-  }) : super(
-    isRunning: isRunning,
-
+  PauseChronometerEvent() : super(
+    isRunning: false,
+    reset: false,
   );
 }
 
 class ResetChronometerEvent extends ChronometerEvent {
-  ResetChronometerEvent({
-    required bool isRunning,
-  })
+  ResetChronometerEvent()
       : super(
     isRunning: false,
+    reset: true,
   );
 }
 
 abstract class ChronometerState {
   final bool isRunning;
+  final bool reset;
 
 
   ChronometerState({
     required this.isRunning,
+    required this.reset,
   });
 }
 
 class RunningChronometer extends ChronometerState {
-  RunningChronometer({
-    required bool isRunning,
-  }) : super(
+  RunningChronometer() : super(
     isRunning: true,
+    reset: false,
   );
 }
 
 class PauseChronometer extends ChronometerState {
-  PauseChronometer({
-    required bool isRunning,
-  }) : super(
+  PauseChronometer() : super(
     isRunning: false,
-
+    reset: false,
   );
 }
 
 class ResetChronometer extends ChronometerState {
-  ResetChronometer({
-    required bool isRunning,
-  }) : super(
+  ResetChronometer() : super(
     isRunning: false,
-
+    reset: true,
   );
 }
 
 class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
-  ChronometerBloc() : super(PauseChronometer(isRunning: false)) {
+  ChronometerBloc() : super(PauseChronometer()) {
     on<RunningChronometerEvent>(_startChronometer);
+    on<PauseChronometerEvent>(_pauseChronometer);
+    on<ResetChronometerEvent>(_resetChronometer);
   }
 
   FutureOr<void> _startChronometer(RunningChronometerEvent event, Emitter<ChronometerState> emit) {
 
     if (!state.isRunning) {
 
-      Future.delayed(const Duration(), () {
-
-      });
-
-      emit(RunningChronometer(isRunning: true));
+      emit(RunningChronometer());
 
     }
+  }
+
+
+  FutureOr<void> _pauseChronometer(PauseChronometerEvent event, Emitter<ChronometerState> emit) {
+
+    if (state.isRunning) {
+
+      emit(PauseChronometer());
+
+    }
+
+  }
+
+  FutureOr<void> _resetChronometer(ResetChronometerEvent event, Emitter<ChronometerState> emit) {
+
+    emit(ResetChronometer());
+
   }
 }

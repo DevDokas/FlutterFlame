@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/checkpoint.dart';
 import 'package:time_beater/components/custom_hitbox.dart';
 import 'package:time_beater/components/movable_platform.dart';
@@ -496,6 +497,8 @@ class Player extends SpriteAnimationGroupComponent
   void _reachedCheckpoint() {
     hasReachedCheckpoint = true;
 
+    game.chronometerBloc.add(PauseChronometerEvent());
+
     if(scale.x > 0){
       position = position - Vector2.all(32);
     } else if (scale.x < 0) {
@@ -508,6 +511,7 @@ class Player extends SpriteAnimationGroupComponent
       game.overlays.add(game.loadingScreenOverlayIdentifier);
       hasReachedCheckpoint = false;
       position = Vector2.all(-640);
+      game.chronometerBloc.add(ResetChronometerEvent());
 
       Future.delayed(const Duration(seconds: 1), () {
         game.loadNextLevel();

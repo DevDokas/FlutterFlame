@@ -18,7 +18,10 @@ class _HudIngameState extends State<HudIngame> {
   final seconds = RxNotifier<int>(0);
   final minutes = RxNotifier<int>(0);
   final iniciou = RxNotifier<bool>(false);
-  Timer? timer;
+  Timer? timerMilliseconds;
+  Timer? timerSeconds;
+  Timer? timerMinutes;
+
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +43,27 @@ class _HudIngameState extends State<HudIngame> {
                   );
                 });
           } else if (state is PauseChronometer) {
-            // Exiba os valores do cronômetro quando ele estiver pausado
+            iniciou.value = false;
+            timerMilliseconds?.cancel();
+            timerSeconds?.cancel();
+            timerMinutes?.cancel();
             return RxBuilder(
                 builder: (context) {
-                  iniciou.value = false;
                   return Text("${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}");
-                });;
+                });
           } else if (state is ResetChronometer) {
-            // Exiba os valores do cronômetro quando ele estiver zerado
+            iniciou.value = false;
+            milliseconds.value = 0;
+            seconds.value = 0;
+            minutes.value = 0;
+            timerMilliseconds?.cancel();
+            timerSeconds?.cancel();
+            timerMinutes?.cancel();
             return RxBuilder(
                 builder: (context) {
-                  iniciou.value = false;
+
                   return Text("${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}");
-                });;
+                });
           } else {
             // Caso padrão: exiba algo quando o estado não for reconhecido
             return RxBuilder(
@@ -63,17 +74,16 @@ class _HudIngameState extends State<HudIngame> {
         },
       ),
     );
-    throw UnimplementedError();
   }
 
   void contador() {
-    Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
+    timerMilliseconds ??= Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
       milliseconds.value == 999 ? milliseconds.value = 0 : milliseconds.value += 1 ;
-      });
-    Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+    });
+    timerSeconds ??= Timer.periodic(const Duration(seconds: 1), (Timer timer) {
       seconds.value == 59 ? seconds.value = 0 : seconds.value += 1;
     });
-    Timer.periodic(const Duration(minutes: 1), (Timer timer) {
+    timerMinutes ??= Timer.periodic(const Duration(minutes: 1), (Timer timer) {
       minutes.value += 1;
     });
   }
