@@ -5,7 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/screens/hud_ingame_screen.dart';
 
+import '../components/dash_button.dart';
+import '../components/down_button.dart';
+import '../components/jump_button.dart';
 import '../components/level.dart';
+import '../components/pause_button.dart';
 import '../data/player_skins.dart';
 import '../time_beater.dart';
 
@@ -15,12 +19,19 @@ class CharacterSelectionScreen extends StatelessWidget {
   const CharacterSelectionScreen(this.game, {super.key, required this.hudIngame});
 
   void attChronometer(BuildContext context) {
-
-   game.chronometerBloc.add(RunningChronometerEvent());
-   game.overlays.remove(game.characterSelectionOverlayIdentifier);
-   game.overlays.add(game.admobOverlayIdentifier);
-   game.paused = false;
-   game.isGameRunning = true;
+    game.player.hasReachedCheckpoint = false;
+    game.gameHasReseted = true;
+    game.addJoystick();
+    game.add(JumpButton());
+    game.add(DownButton());
+    game.add(DashButton());
+    game.add(PauseButton());
+    game.chronometerBloc.add(RunningChronometerEvent());
+    game.player.position = game.player.startingPosition;
+    game.overlays.remove(game.characterSelectionOverlayIdentifier);
+    game.overlays.add(game.admobOverlayIdentifier);
+    game.paused = false;
+    game.isGameRunning = true;
   }
 
   void chooseCharacter(PlayerSkins playerSkins) {

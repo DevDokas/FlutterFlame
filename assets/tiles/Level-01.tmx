@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="46" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="35">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="46" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="71">
  <tileset firstgid="1" source="TilesetTimeBeater.tsx"/>
  <layer id="1" name="Background" width="80" height="46">
   <data encoding="csv">
@@ -32,12 +32,12 @@
 201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,183,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,205,206,208,184,184,184,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
-201,0,0,0,0,205,206,206,206,206,206,206,208,184,184,184,185,0,0,0,18,19,20,0,0,0,18,19,20,0,0,0,18,19,20,0,0,0,18,19,20,0,0,0,183,184,184,184,184,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
+201,0,0,0,0,205,206,206,206,206,206,206,208,184,184,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,183,184,184,184,184,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,227,228,228,228,228,228,228,228,228,228,228,229,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,186,228,228,228,187,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,207,0,0,0,205,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,207,0,0,0,205,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
-201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,207,0,0,0,205,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
-201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,208,184,184,184,209,208,184,184,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
+201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,207,0,0,0,205,208,184,184,184,185,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
+201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,208,184,184,184,209,206,206,206,206,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,227,228,228,228,228,228,228,228,228,187,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
 201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,205,207,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,199,
@@ -69,6 +69,50 @@
     <property name="nextLevel" type="int" value="2"/>
    </properties>
   </object>
+  <object id="54" name="SecretWall" type="SecretWall" x="720" y="528" width="16" height="16">
+   <properties>
+    <property name="side" value="right"/>
+   </properties>
+  </object>
+  <object id="55" name="SecretWall" type="SecretWall" x="720" y="512" width="16" height="16">
+   <properties>
+    <property name="side" value="right"/>
+   </properties>
+  </object>
+  <object id="56" name="SecretWall" type="SecretWall" x="720" y="496" width="16" height="16">
+   <properties>
+    <property name="side" value="right"/>
+   </properties>
+  </object>
+  <object id="57" name="SecretWall" type="SecretWall" x="704" y="528" width="16" height="16">
+   <properties>
+    <property name="side" value="left"/>
+   </properties>
+  </object>
+  <object id="58" name="SecretWall" type="SecretWall" x="704" y="496" width="16" height="16">
+   <properties>
+    <property name="side" value="left"/>
+   </properties>
+  </object>
+  <object id="59" name="SecretWall" type="SecretWall" x="704" y="512" width="16" height="16">
+   <properties>
+    <property name="side" value="left"/>
+   </properties>
+  </object>
+  <object id="60" name="Apple" type="Fruit" x="752" y="512" width="32" height="32"/>
+  <object id="61" name="Apple" type="Fruit" x="752" y="512" width="32" height="32"/>
+  <object id="62" name="MovablePlatform" type="MovablePlatform" x="16" y="432" width="64" height="16">
+   <properties>
+    <property name="isVertical" type="bool" value="true"/>
+    <property name="numOfPlatforms" type="int" value="4"/>
+    <property name="offNeg" type="float" value="19"/>
+    <property name="offPos" type="float" value="0"/>
+   </properties>
+  </object>
+  <object id="67" name="DropPlatform" type="DropPlatform" x="608" y="464" width="48" height="16"/>
+  <object id="68" name="DropPlatform" type="DropPlatform" x="512" y="464" width="48" height="16"/>
+  <object id="69" name="DropPlatform" type="DropPlatform" x="416" y="464" width="48" height="16"/>
+  <object id="70" name="DropPlatform" type="DropPlatform" x="320" y="464" width="48" height="16"/>
  </objectgroup>
  <objectgroup id="2" name="Collisions">
   <object id="1" x="848" y="544" width="32" height="80"/>
@@ -93,6 +137,6 @@
   <object id="28" x="1264" y="0" width="16" height="736"/>
   <object id="30" x="0" y="0" width="1280" height="16"/>
   <object id="31" x="0" y="720" width="1280" height="16"/>
-  <object id="32" name="Apple" type="Fruit" x="752" y="512" width="32" height="32"/>
+  <object id="36" x="816" y="528" width="64" height="16"/>
  </objectgroup>
 </map>

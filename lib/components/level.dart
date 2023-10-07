@@ -7,6 +7,7 @@ import 'package:time_beater/components/checkpoint.dart';
 import 'package:time_beater/components/collision_block.dart';
 import 'package:time_beater/components/fruit.dart';
 import 'package:time_beater/components/saw.dart';
+import 'package:time_beater/components/secret_wall.dart';
 import 'package:time_beater/components/spikes.dart';
 import 'package:time_beater/time_beater.dart';
 
@@ -103,6 +104,15 @@ class Level extends World with HasGameRef<TimeBeater>{
                 size: Vector2(spawnPoints.width, spawnPoints.height)
             );
             add(movablePlatform);
+            break;
+          case "SecretWall":
+            final side = spawnPoints.properties.getValue('side');
+            final secretWall = SecretWall(
+                side: side,
+                position: Vector2(spawnPoints.x, spawnPoints.y),
+                size: Vector2(spawnPoints.width, spawnPoints.height)
+            );
+            add(secretWall);
             break;
           default:
         }

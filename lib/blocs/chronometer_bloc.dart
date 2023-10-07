@@ -80,6 +80,7 @@ class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
     if (!state.isRunning) {
 
       emit(RunningChronometer());
+      print(state);
 
     }
   }
@@ -90,7 +91,7 @@ class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
     if (state.isRunning) {
 
       emit(PauseChronometer());
-
+      print(state);
     }
 
   }
@@ -98,6 +99,6 @@ class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
   FutureOr<void> _resetChronometer(ResetChronometerEvent event, Emitter<ChronometerState> emit) {
 
     emit(ResetChronometer());
-
+    print(state);
   }
 }

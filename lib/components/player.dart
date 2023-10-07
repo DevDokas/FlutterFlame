@@ -87,6 +87,8 @@ class Player extends SpriteAnimationGroupComponent
     _loadAllAnimations();
     //debugMode = true;
 
+    game.overlays.add(game.hudOverlayIdentifier);
+
     startingPosition = Vector2(position.x, position.y);
 
     add(RectangleHitbox(
@@ -178,6 +180,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+
     if(!hasReachedCheckpoint) {
       if (other is MovablePlatform) {
         if (other.isVertical) {
@@ -204,14 +207,11 @@ class Player extends SpriteAnimationGroupComponent
 
         } else {
           double platformVelocityX = other.velocity.x;
-          // Ajuste a posição vertical do jogador para ficar em cima da plataforma
+
           position.y = other.y - size.y;
 
-          // Ajuste a posição horizontal do jogador para acompanhar a plataforma
-          // Use a diferença entre a posição da plataforma e a posição anterior do jogador
           position.x += other.velocity.x * fixedDeltaTime;
 
-          // Atualize a escala do jogador conforme necessário
           if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
             current = PlayerState.running;
           } else if (velocity.x == 0) {
@@ -507,14 +507,11 @@ class Player extends SpriteAnimationGroupComponent
 
     current = PlayerState.finishedLevel;
 
-    Future.delayed(const Duration(seconds: 2), (){
-      game.overlays.add(game.loadingScreenOverlayIdentifier);
-      hasReachedCheckpoint = false;
-      position = Vector2.all(-640);
-      game.chronometerBloc.add(ResetChronometerEvent());
-
-      Future.delayed(const Duration(seconds: 1), () {
-        game.loadNextLevel();
+    Future.delayed(const Duration(seconds: 1), () {
+      game.overlays.add(game.mainMenuOverlayIdentifier);
+      game.overlays.remove(game.hudOverlayIdentifier);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        game.overlays.add(game.hudOverlayIdentifier);
       });
     });
   }

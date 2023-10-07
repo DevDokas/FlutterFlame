@@ -33,11 +33,11 @@
                 2,
                 3
             ],
-            "scale": 0.75,
+            "scale": 1.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 674.6666666666665,
-                "y": 484
+                "x": 347.33333333333326,
+                "y": 288
             }
         },
         "Level-02.tmx": {
@@ -81,8 +81,8 @@
             "scale": 1.63578125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.41923774954626,
-                "y": 97.50692520775623
+                "x": 318.5022447225141,
+                "y": 183.3986054064381
             }
         },
         "old-Level-01.tmx": {
@@ -118,7 +118,7 @@
         "Level-01.tmx"
     ],
     "project": "TimeBeater.tiled-project",
-    "property.type": "int",
+    "property.type": "string",
     "recentFiles": [
         "TilesetTimeBeater.tsx",
         "Level-02.tmx",

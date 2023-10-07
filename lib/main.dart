@@ -50,14 +50,11 @@ class MyAppState extends State<MyApp> {
     return GameWidget(
       game: TimeBeater(chronometerBloc: context.read<ChronometerBloc>()),
       overlayBuilderMap: {
-        'HUDScreen': (BuildContext context, TimeBeater game) {
-          return HudIngame();
+        'MainMenu': (BuildContext context, TimeBeater game) {
+          return HomeScreen(game);
         },
         'LoadScreen': (BuildContext context, TimeBeater game) {
           return LoadScreen(game);
-        },
-        'MainMenu': (BuildContext context, TimeBeater game) {
-          return HomeScreen(game);
         },
         'CharacterSelection': (BuildContext context, TimeBeater game) {
           return CharacterSelectionScreen(game, hudIngame: HudIngame(),);
@@ -67,6 +64,9 @@ class MyAppState extends State<MyApp> {
         },
         'AdmobBanner': (BuildContext context, TimeBeater game) {
           return const AdmobBanner();
+        },
+        'HUDScreen': (BuildContext context, TimeBeater game) {
+          return HudIngame();
         },
       },
     );

@@ -6,14 +6,10 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/input.dart';
-import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
+import 'package:flutter/services.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
-import 'package:time_beater/components/dash_button.dart';
-import 'package:time_beater/components/down_button.dart';
-import 'package:time_beater/components/jump_button.dart';
-import 'package:time_beater/components/pause_button.dart';
 import 'package:time_beater/components/player.dart';
 import 'package:time_beater/components/level.dart';
 
@@ -58,6 +54,7 @@ class TimeBeater extends FlameGame
 
   // False = Keyboard || True = Touch
   bool showControls = true;
+  bool gameHasReseted = false;
 
   //Cam variable
   double cameraSpeed = 100; //controls how much smoothness you want
@@ -73,12 +70,9 @@ class TimeBeater extends FlameGame
 
   @override
   FutureOr<void> onLoad() async{
-    //load all images into cache
+    priority = 1;
+
     await images.loadAllImages();
-
-    add(FlameBlocProvider.value(value: chronometerBloc, children: [
-
-    ]));
 
     overlays.add(hudOverlayIdentifier);
 
@@ -87,8 +81,6 @@ class TimeBeater extends FlameGame
       overlays.add(mainMenuOverlayIdentifier);
       paused = true;
     }
-
-    _addTouchControls();
 
     return super.onLoad();
   }
@@ -162,7 +154,6 @@ class TimeBeater extends FlameGame
   void _loadLevel() {
     if (player.parent != null) {
       removeAll(children);
-      _addTouchControls();
     }
 
     Future.delayed(const Duration(seconds: 1), () {
@@ -183,15 +174,5 @@ class TimeBeater extends FlameGame
       addAll([cam, world]);
 
     });
-  }
-
-  _addTouchControls() {
-    if (showControls) {
-      addJoystick();
-      add(JumpButton());
-      add(DownButton());
-      add(DashButton());
-      add(PauseButton());
-    }
   }
 }
