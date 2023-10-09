@@ -5,8 +5,10 @@ import 'package:flame_tiled/flame_tiled.dart';
 import 'package:time_beater/components/background_tile.dart';
 import 'package:time_beater/components/checkpoint.dart';
 import 'package:time_beater/components/collision_block.dart';
+import 'package:time_beater/components/drop_platform.dart';
 import 'package:time_beater/components/fruit.dart';
 import 'package:time_beater/components/saw.dart';
+import 'package:time_beater/components/secret_wall.dart';
 import 'package:time_beater/components/spikes.dart';
 import 'package:time_beater/time_beater.dart';
 
@@ -39,17 +41,6 @@ class Level extends World with HasGameRef<TimeBeater>{
   void _scrollingBackground() {
     final backgroundLayer =
       level.tileMap.getLayer('Background');
-
-    if (backgroundLayer != null) {
-      final backgroundColor =
-        backgroundLayer.properties.getValue('BackgroundColor');
-      final backgroundTile = BackgroundTile(
-        color: backgroundColor ?? 'Gray',
-        position: Vector2(0, 0),
-      );
-
-      add(backgroundTile);
-    }
   }
 
   void _spawningObjects() {
@@ -114,6 +105,28 @@ class Level extends World with HasGameRef<TimeBeater>{
                 size: Vector2(spawnPoints.width, spawnPoints.height)
             );
             add(movablePlatform);
+            break;
+          case "DropPlatform":
+            final numOfPlatforms = spawnPoints.properties.getValue('numOfPlatforms');
+            final offNeg = spawnPoints.properties.getValue('offNeg');
+            final offPos = spawnPoints.properties.getValue('offPos');
+            final dropPlatform = DropPlatform(
+                numOfPlatforms: numOfPlatforms,
+                offNeg: offNeg,
+                offPos: offPos,
+                position: Vector2(spawnPoints.x, spawnPoints.y),
+                size: Vector2(spawnPoints.width, spawnPoints.height)
+            );
+            add(dropPlatform);
+            break;
+          case "SecretWall":
+            final side = spawnPoints.properties.getValue('side');
+            final secretWall = SecretWall(
+                side: side,
+                position: Vector2(spawnPoints.x, spawnPoints.y),
+                size: Vector2(spawnPoints.width, spawnPoints.height)
+            );
+            add(secretWall);
             break;
           default:
         }

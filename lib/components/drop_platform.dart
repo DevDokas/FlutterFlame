@@ -6,14 +6,12 @@ import 'package:time_beater/time_beater.dart';
 
 import 'custom_hitbox.dart';
 
-class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
-  final bool isVertical;
+class DropPlatform extends SpriteComponent with HasGameRef<TimeBeater>{
   final int numOfPlatforms;
   final double offNeg;
   final double offPos;
   Vector2 velocity = Vector2.zero();
-  MovablePlatform({
-    this.isVertical = false,
+  DropPlatform({
     this.numOfPlatforms = 0,
     this.offNeg = 0,
     this.offPos = 0,
@@ -23,12 +21,14 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
       position: position,
       size: size
   );
-  static const moveSpeed = 50;
   static const tileSize = 16;
+  static const moveSpeed = 500;
 
-  double moveDirection = 1;
+  Vector2 initialPosition = Vector2.zero();
+  double moveDirection = 0;
   double rangeNeg = 0;
   double rangePos = 0;
+  bool hasPlayerTouched = false;
   String platformSprite = "";
 
   CustomHitbox hitbox = CustomHitbox(
@@ -45,13 +45,11 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
     add(RectangleHitbox());
     //debugMode = true;
 
-    if (isVertical) {
-      rangeNeg = position.y - offNeg * tileSize;
-      rangePos = position.y + offPos * tileSize;
-    } else {
-      rangeNeg = position.x - offNeg * tileSize;
-      rangePos = position.x + offPos * tileSize;
-    }
+    initialPosition = Vector2(position.x, position.y);
+
+    rangeNeg = position.y - offNeg * tileSize;
+    rangePos = position.y + offPos * tileSize;
+
 
     if (numOfPlatforms == 2) {
       platformSprite = 'Terrain/Platform(2blocks).png';
@@ -69,32 +67,30 @@ class MovablePlatform extends SpriteComponent with HasGameRef<TimeBeater>{
 
   @override
   void update(double dt) {
-    if(isVertical) {
+
+    if (hasPlayerTouched) {
       _moveVertically(dt);
-    } else {
-      _moveHorizontally(dt);
     }
 
     super.update(dt);
   }
 
   void _moveVertically(double dt) {
-    if(position.y >= rangePos) {
-      moveDirection = -1;
-    } else if (position.y <= rangeNeg) {
-      moveDirection = 1;
-    }
-    position.y += moveDirection * moveSpeed * dt;
-  }
 
-  void _moveHorizontally(double dt) {
-    if(position.x >= rangePos) {
-      velocity.x = -moveSpeed.toDouble();
-      moveDirection = -1;
-    } else if (position.x <= rangeNeg) {
-      velocity.x = moveSpeed.toDouble();
-      moveDirection = 1;
+    if (offPos > 0 && offNeg == 0) {
+
+      if (position.y <= rangeNeg) {
+        moveDirection = 1;
+      } else if (position.y >= rangePos)  {
+        position = initialPosition;
+        hasPlayerTouched = false;
+      }
+
+      position.y += moveDirection * moveSpeed * dt;
+    } else if (offNeg > 0 && offPos == 0) {
+      // TODO: implementar plataforma que sobe de uma vez
+      position.y += moveDirection * moveSpeed * dt;
     }
-    position.x += velocity.x * dt;
+
   }
 }

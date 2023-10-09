@@ -43,6 +43,12 @@ dependencies:
   hive_generator: ^2.0.1
   path_provider: ^2.1.1
   carousel_slider: ^4.2.1
+  flutter_bloc: ^8.0.0
+  flame_bloc: ^1.10.3
+  rx_notifier: ^2.3.0
+
+  # Remover caso nao for usar
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:

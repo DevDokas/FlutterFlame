@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flutter/services.dart';
+import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/checkpoint.dart';
 import 'package:time_beater/components/custom_hitbox.dart';
+import 'package:time_beater/components/drop_platform.dart';
 import 'package:time_beater/components/movable_platform.dart';
 import 'package:time_beater/components/saw.dart';
 import 'package:time_beater/components/spikes.dart';
@@ -85,6 +87,8 @@ class Player extends SpriteAnimationGroupComponent
   FutureOr<void> onLoad() {
     _loadAllAnimations();
     //debugMode = true;
+
+    game.overlays.add(game.hudOverlayIdentifier);
 
     startingPosition = Vector2(position.x, position.y);
 
@@ -171,13 +175,45 @@ class Player extends SpriteAnimationGroupComponent
       if (other is Saw) _respawn();
       if (other is Spikes) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
+      if (other is DropPlatform) {
+        Future.delayed(const Duration(seconds: 1), () {
+          other.hasPlayerTouched = true;
+        });
+      }
     }
     super.onCollisionStart(intersectionPoints, other);
   }
 
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+
     if(!hasReachedCheckpoint) {
+      if (other is DropPlatform) {
+/*        Future.delayed(const Duration(seconds: 1), () {
+          other.hasPlayerTouched = true;
+        });*/
+        position.y = other.y - 32;
+
+        if (hasJumped) {
+          if (velocity.y < 0) {
+            velocity.y = -_jumpForce * 2;
+          } else {
+            velocity.y = -_jumpForce;
+          }
+          position.y += velocity.y * fixedDeltaTime;
+          isOnGround = false;
+        }
+
+        if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
+          current = PlayerState.running;
+        } else if(velocity.x == 0) {
+          current = PlayerState.idle;
+        }
+
+        // Indique que o jogador está no chão
+        isOnGround = true;
+
+      }
       if (other is MovablePlatform) {
         if (other.isVertical) {
           position.y = other.y - 32;
@@ -198,16 +234,16 @@ class Player extends SpriteAnimationGroupComponent
             current = PlayerState.idle;
           }
 
+          // Indique que o jogador está no chão
+          isOnGround = true;
+
         } else {
           double platformVelocityX = other.velocity.x;
-          // Ajuste a posição vertical do jogador para ficar em cima da plataforma
+
           position.y = other.y - size.y;
 
-          // Ajuste a posição horizontal do jogador para acompanhar a plataforma
-          // Use a diferença entre a posição da plataforma e a posição anterior do jogador
           position.x += other.velocity.x * fixedDeltaTime;
 
-          // Atualize a escala do jogador conforme necessário
           if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
             current = PlayerState.running;
           } else if (velocity.x == 0) {
@@ -493,6 +529,8 @@ class Player extends SpriteAnimationGroupComponent
   void _reachedCheckpoint() {
     hasReachedCheckpoint = true;
 
+    game.chronometerBloc.add(PauseChronometerEvent());
+
     if(scale.x > 0){
       position = position - Vector2.all(32);
     } else if (scale.x < 0) {
@@ -501,13 +539,11 @@ class Player extends SpriteAnimationGroupComponent
 
     current = PlayerState.finishedLevel;
 
-    Future.delayed(const Duration(seconds: 2), (){
-      game.overlays.add(game.loadingScreenOverlayIdentifier);
-      hasReachedCheckpoint = false;
-      position = Vector2.all(-640);
-
-      Future.delayed(const Duration(seconds: 1), () {
-        game.loadNextLevel();
+    Future.delayed(const Duration(seconds: 1), () {
+      game.overlays.add(game.mainMenuOverlayIdentifier);
+      game.overlays.remove(game.hudOverlayIdentifier);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        game.overlays.add(game.hudOverlayIdentifier);
       });
     });
   }

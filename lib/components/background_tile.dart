@@ -1,3 +1,4 @@
+/*
 import 'dart:async';
 
 import 'package:flame/components.dart';
@@ -26,4 +27,4 @@ class BackgroundTile extends ParallaxComponent{
     );
     return super.onLoad();
   }
-}
+}*/
