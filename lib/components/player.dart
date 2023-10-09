@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/checkpoint.dart';
 import 'package:time_beater/components/custom_hitbox.dart';
+import 'package:time_beater/components/drop_platform.dart';
 import 'package:time_beater/components/movable_platform.dart';
 import 'package:time_beater/components/saw.dart';
 import 'package:time_beater/components/spikes.dart';
@@ -174,6 +175,11 @@ class Player extends SpriteAnimationGroupComponent
       if (other is Saw) _respawn();
       if (other is Spikes) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();
+      if (other is DropPlatform) {
+        Future.delayed(const Duration(seconds: 1), () {
+          other.hasPlayerTouched = true;
+        });
+      }
     }
     super.onCollisionStart(intersectionPoints, other);
   }
@@ -182,6 +188,32 @@ class Player extends SpriteAnimationGroupComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
 
     if(!hasReachedCheckpoint) {
+      if (other is DropPlatform) {
+/*        Future.delayed(const Duration(seconds: 1), () {
+          other.hasPlayerTouched = true;
+        });*/
+        position.y = other.y - 32;
+
+        if (hasJumped) {
+          if (velocity.y < 0) {
+            velocity.y = -_jumpForce * 2;
+          } else {
+            velocity.y = -_jumpForce;
+          }
+          position.y += velocity.y * fixedDeltaTime;
+          isOnGround = false;
+        }
+
+        if (velocity.x < 0 && scale.x > 0 || velocity.x > 0 && scale.x < 0) {
+          current = PlayerState.running;
+        } else if(velocity.x == 0) {
+          current = PlayerState.idle;
+        }
+
+        // Indique que o jogador está no chão
+        isOnGround = true;
+
+      }
       if (other is MovablePlatform) {
         if (other.isVertical) {
           position.y = other.y - 32;

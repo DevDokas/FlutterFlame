@@ -33,17 +33,17 @@
                 2,
                 3
             ],
-            "scale": 1.5,
+            "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 347.33333333333326,
-                "y": 288
+                "x": 604,
+                "y": 600
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                4,
-                3
+                3,
+                4
             ],
             "scale": 1.5,
             "selectedLayer": 2,
@@ -81,8 +81,8 @@
             "scale": 1.63578125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 318.5022447225141,
-                "y": 183.3986054064381
+                "x": 319.41923774954626,
+                "y": 97.50692520775623
             }
         },
         "old-Level-01.tmx": {
@@ -118,13 +118,13 @@
         "Level-01.tmx"
     ],
     "project": "TimeBeater.tiled-project",
-    "property.type": "string",
+    "property.type": "int",
     "recentFiles": [
+        "Level-01.tmx",
         "TilesetTimeBeater.tsx",
         "Level-02.tmx",
         "backup.tmx",
         "old-Level-01.tmx",
-        "Level-01.tmx",
         "test.tmj",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx"

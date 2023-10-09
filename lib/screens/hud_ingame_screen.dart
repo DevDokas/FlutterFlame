@@ -65,7 +65,9 @@ class _HudIngameState extends State<HudIngame> {
             timerMinutes?.cancel();
             return RxBuilder(
                 builder: (context) {
-                  return Text("${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}");
+                  return Text(
+                    milliseconds.value == 0 ? "" : "${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}",
+                  );
                 });
           } else if (state is ResetChronometer) {
             hasReseted.value = true;
@@ -79,7 +81,9 @@ class _HudIngameState extends State<HudIngame> {
             return RxBuilder(
                 builder: (context) {
 
-                  return Text("${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}");
+                  return Text(
+                    milliseconds.value == 0 ? "" : "${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}",
+                  );
                 });
           } else {
             return RxBuilder(
