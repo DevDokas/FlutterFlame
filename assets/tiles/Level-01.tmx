@@ -148,11 +148,6 @@
   <object id="94" name="Spikes" type="Spikes" x="544" y="704" width="16" height="16"/>
   <object id="95" name="Spikes" type="Spikes" x="560" y="704" width="16" height="16"/>
   <object id="96" name="Spikes" type="Spikes" x="576" y="704" width="16" height="16"/>
-  <object id="99" name="Checkpoint" type="Checkpoint" x="256" y="624" width="64" height="64">
-   <properties>
-    <property name="nextLevel" type="int" value="2"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="2" name="Collisions">
   <object id="1" x="848" y="544" width="32" height="80"/>
