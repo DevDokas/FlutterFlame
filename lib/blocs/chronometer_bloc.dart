@@ -5,11 +5,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 abstract class ChronometerEvent {
   bool isRunning;
   bool reset;
+  int? milliseconds;
+  int? seconds;
+  int? minutes;
 
   ChronometerEvent({
     required this.isRunning,
-    required this.reset
-
+    required this.reset,
+    this.milliseconds,
+    this.seconds,
+    this.minutes,
 });
 }
 
@@ -22,9 +27,16 @@ class RunningChronometerEvent extends ChronometerEvent {
 }
 
 class PauseChronometerEvent extends ChronometerEvent {
-  PauseChronometerEvent() : super(
+  PauseChronometerEvent({
+    int? milliseconds,
+    int? seconds,
+    int? minutes,
+  }) : super(
     isRunning: false,
     reset: false,
+    milliseconds: milliseconds,
+    seconds: seconds,
+    minutes: minutes,
   );
 }
 
@@ -39,11 +51,16 @@ class ResetChronometerEvent extends ChronometerEvent {
 abstract class ChronometerState {
   final bool isRunning;
   final bool reset;
-
+  final int? milliseconds;
+  final int? seconds;
+  final int? minutes;
 
   ChronometerState({
     required this.isRunning,
     required this.reset,
+    this.milliseconds,
+    this.seconds,
+    this.minutes,
   });
 }
 
@@ -55,9 +72,17 @@ class RunningChronometer extends ChronometerState {
 }
 
 class PauseChronometer extends ChronometerState {
-  PauseChronometer() : super(
+
+  PauseChronometer({
+    int? milliseconds,
+    int? seconds,
+    int? minutes,
+  }) : super(
     isRunning: false,
     reset: false,
+    milliseconds: milliseconds,
+    seconds: seconds,
+    minutes: minutes,
   );
 }
 
@@ -101,4 +126,5 @@ class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
     emit(ResetChronometer());
     print(state);
   }
+
 }

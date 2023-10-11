@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/screens/character_selection_screen.dart';
+import 'package:time_beater/screens/flag_menu.dart';
 import 'package:time_beater/screens/home_screen.dart';
 import 'package:time_beater/screens/hud_ingame_screen.dart';
 import 'package:time_beater/screens/load_screen.dart';
@@ -58,6 +59,9 @@ class MyAppState extends State<MyApp> {
         },
         'CharacterSelection': (BuildContext context, TimeBeater game) {
           return CharacterSelectionScreen(game, hudIngame: HudIngame(),);
+        },
+        'FlagMenu': (BuildContext context, TimeBeater game) {
+          return FlagMenu(game);
         },
         'PauseMenu': (BuildContext context, TimeBeater game) {
           return PauseScreen(game);

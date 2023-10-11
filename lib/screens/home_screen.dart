@@ -27,8 +27,8 @@ class HomeScreen extends StatelessWidget {
           Image.asset(
             'assets/images/HUD/MainMenu.png',
             fit: BoxFit.cover,
-            width: screenWidth - 10,
-            height: screenHeight - 10,
+            width: screenWidth,
+            height: screenHeight,
             alignment: Alignment.center,
           ),
           Container(

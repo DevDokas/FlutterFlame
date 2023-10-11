@@ -42,6 +42,10 @@ class TimeBeater extends FlameGame
   String mainMenuOverlayIdentifier = 'MainMenu';
   bool inMainMenu = true;
 
+  //FlagMenu
+  String flagMenuOverlayIdentifier = 'FlagMenu';
+  bool inFlagMenu = false;
+
   //CharacterSelection
   String characterSelectionOverlayIdentifier = 'CharacterSelection';
   bool inCharacterSelection = false;
@@ -60,7 +64,7 @@ class TimeBeater extends FlameGame
   double cameraSpeed = 100; //controls how much smoothness you want
 
   //Bloc Chronometer
-  final ChronometerBloc chronometerBloc;
+  ChronometerBloc chronometerBloc;
 
   List<String> levelNames = [
     "Level-01",
@@ -88,9 +92,13 @@ class TimeBeater extends FlameGame
   @override
   void update(double dt) {
 
+    if (!inMainMenu && !inCharacterSelection && !inFlagMenu) {
+      chronometerBloc.add(RunningChronometerEvent());
+    }
+    /*
     Future.delayed(const Duration(milliseconds: 1000), () {
       chronometerBloc.add(RunningChronometerEvent());
-    });
+    });*/
 
     if (showControls) {
       updateJoystick();

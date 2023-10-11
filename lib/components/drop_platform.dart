@@ -82,8 +82,10 @@ class DropPlatform extends SpriteComponent with HasGameRef<TimeBeater>{
       if (position.y <= rangeNeg) {
         moveDirection = 1;
       } else if (position.y >= rangePos)  {
-        position = initialPosition;
-        hasPlayerTouched = false;
+        Future.delayed(const Duration(seconds: 3), () {
+          position = initialPosition;
+          hasPlayerTouched = false;
+        });
       }
 
       position.y += moveDirection * moveSpeed * dt;

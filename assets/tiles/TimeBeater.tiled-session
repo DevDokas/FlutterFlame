@@ -36,14 +36,14 @@
             "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 604,
-                "y": 600
+                "x": 617.3333333333334,
+                "y": 342.6666666666667
             }
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                3,
-                4
+                4,
+                3
             ],
             "scale": 1.5,
             "selectedLayer": 2,
@@ -120,11 +120,11 @@
     "project": "TimeBeater.tiled-project",
     "property.type": "int",
     "recentFiles": [
-        "Level-01.tmx",
         "TilesetTimeBeater.tsx",
         "Level-02.tmx",
         "backup.tmx",
         "old-Level-01.tmx",
+        "Level-01.tmx",
         "test.tmj",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-02.tmx",
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/Level-01.tmx"

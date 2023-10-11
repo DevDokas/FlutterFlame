@@ -540,7 +540,9 @@ class Player extends SpriteAnimationGroupComponent
     current = PlayerState.finishedLevel;
 
     Future.delayed(const Duration(seconds: 1), () {
-      game.overlays.add(game.mainMenuOverlayIdentifier);
+      //game.overlays.add(game.mainMenuOverlayIdentifier);
+      game.overlays.add(game.flagMenuOverlayIdentifier);
+      game.inFlagMenu = true;
       game.overlays.remove(game.hudOverlayIdentifier);
       Future.delayed(const Duration(milliseconds: 500), () {
         game.overlays.add(game.hudOverlayIdentifier);
