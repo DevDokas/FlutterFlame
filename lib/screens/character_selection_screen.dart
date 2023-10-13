@@ -26,6 +26,7 @@ class CharacterSelectionScreen extends StatelessWidget {
     game.add(DownButton());
     game.add(DashButton());
     game.add(PauseButton());
+    game.overlays.add(game.hudOverlayIdentifier);
     game.chronometerBloc.add(RunningChronometerEvent());
     game.player.position = game.player.startingPosition;
     game.overlays.remove(game.characterSelectionOverlayIdentifier);
@@ -334,7 +335,6 @@ class CharacterSelectionScreen extends StatelessWidget {
         ),
       ),
     );
-    throw UnimplementedError();
   }
 
 }

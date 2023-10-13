@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui' as ui;
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -45,6 +44,10 @@ class TimeBeater extends FlameGame
   //FlagMenu
   String flagMenuOverlayIdentifier = 'FlagMenu';
   bool inFlagMenu = false;
+
+  //PauseMenu
+  String pauseOverlayIdentifier = 'PauseMenu';
+  bool inPauseMenu = false;
 
   //CharacterSelection
   String characterSelectionOverlayIdentifier = 'CharacterSelection';

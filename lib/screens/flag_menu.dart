@@ -54,25 +54,26 @@ class FlagMenu extends StatelessWidget {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.red), // Cor de fundo do botão
                   foregroundColor: MaterialStateProperty.all(Colors.white), // Cor do texto do botão
-                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 20, vertical: 10)), // Preenchimento do botão
+                  padding: MaterialStateProperty.all(const EdgeInsets.symmetric(horizontal: 20, vertical: 10)), // Preenchimento do botão
                   shape: MaterialStateProperty.all(RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10), // Borda arredondada
                   )),
                 ),
-                child: Text("Voltar ao Menu"),
+                child: const Text("Voltar ao Menu"),
               )
             ],
           ),
         ),
       );
     } else {
-      return Align(
-        child: Text("${milliseconds}"),
+      return const Align(
+        child: Text(""),
       );
     }
   }
 
   _backToMainMenu() {
+    game.overlays.remove(game.hudOverlayIdentifier);
     game.overlays.remove(game.flagMenuOverlayIdentifier);
     game.overlays.add(game.mainMenuOverlayIdentifier);
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/time_beater.dart';
 
 class PauseButton extends SpriteComponent
@@ -30,6 +31,7 @@ class PauseButton extends SpriteComponent
   @override
   void onTapDown(TapDownEvent event) {
     game.overlays.add(pauseOverlayIdentifier);
+    game.chronometerBloc.add(PauseChronometerEvent());
     super.onTapDown(event);
   }
 
