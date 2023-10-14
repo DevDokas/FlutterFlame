@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/config/ColorPallet.dart';
 import 'package:time_beater/time_beater.dart';
 
 import '../components/pause_button.dart';
@@ -40,19 +41,19 @@ class PauseScreen extends StatelessWidget {
     return Align(
       child: Stack(
         children: [
-/*          Image.asset(
-            '',
+          Image.asset(
+            'assets/images/HUD/PauseMenu.png',
             fit: BoxFit.cover,
-            width: double.infinity,
-            height: double.infinity,
+            width: 500,
+            height: 300,
             alignment: Alignment.center,
-          ),*/
+          ),
           Container(
             height: 300,
             width: 500,
             padding: const EdgeInsets.all(50),
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.transparent,
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: Column(
@@ -62,7 +63,7 @@ class PauseScreen extends StatelessWidget {
                     onPressed: () => _resumeGame(),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(350.0, 50.0),
-                      backgroundColor: Colors.red,
+                      backgroundColor: ColorPallet().primaryButtonColor,
                     ),
                     child: const Text(
                       "Continuar",
@@ -76,7 +77,7 @@ class PauseScreen extends StatelessWidget {
                     onPressed: () => _restartGame(),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(350.0, 50.0),
-                      backgroundColor: Colors.red,
+                      backgroundColor: ColorPallet().primaryButtonColor,
                     ),
                     child: const Text(
                       "Reiniciar",
@@ -90,7 +91,7 @@ class PauseScreen extends StatelessWidget {
                     onPressed: () => _backToMainMenu(),
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size(350.0, 50.0),
-                      backgroundColor: Colors.red,
+                      backgroundColor: ColorPallet().primaryButtonColor,
                     ),
                     child: const Text(
                       "Voltar ao Menu",
