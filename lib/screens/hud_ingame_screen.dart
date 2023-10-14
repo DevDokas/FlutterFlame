@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rx_notifier/rx_notifier.dart';
-
 import '../blocs/chronometer_bloc.dart';
 
 class HudIngame extends StatefulWidget {
@@ -17,94 +15,86 @@ class _HudIngameState extends State<HudIngame> {
   final milliseconds = RxNotifier<int>(0);
   final seconds = RxNotifier<int>(0);
   final minutes = RxNotifier<int>(0);
-  final iniciou = RxNotifier<bool>(false);
   final hasReseted = RxNotifier<bool>(false);
-  Timer? timerMilliseconds;
-  Timer? timerSeconds;
-  Timer? timerMinutes;
-
+  Timer? timer;
 
   @override
   void dispose() {
-    if(hasReseted.value) {
-      timerMilliseconds?.cancel();
-      timerSeconds?.cancel();
-      timerMinutes?.cancel();
-    }
+    timer?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
-    iniciou.value ? contador() : null;
     return Align(
-      alignment: const Alignment(0.67, -0.9),
+      alignment: const Alignment(0.67, -0.95),
       child: BlocBuilder<ChronometerBloc, ChronometerState>(
         builder: (context, state) {
-          if (state is RunningChronometer) {
-            iniciou.value = true;
-            if (hasReseted.value) {
-              milliseconds.value = 0;
-              seconds.value = 0;
-              minutes.value = 0;
-            }
-            return RxBuilder(
-                builder: (context) {
-                  return Text(
-                      milliseconds.value == 0 ? "" : "${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}",
-                      style: const TextStyle(
-                        fontSize: 40,
-                      ),
-                  );
-                });
-          } else if (state is PauseChronometer) {
-            iniciou.value = false;
-            timerMilliseconds?.cancel();
-            timerSeconds?.cancel();
-            timerMinutes?.cancel();
-            return RxBuilder(
-                builder: (context) {
-                  return Text(
-                    milliseconds.value == 0 ? "" : "${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}",
-                  );
-                });
-          } else if (state is ResetChronometer) {
+          if (state is ResetChronometer) {
             hasReseted.value = true;
-            iniciou.value = false;
-            milliseconds.value = 0;
-            seconds.value = 0;
-            minutes.value = 0;
-            timerMilliseconds?.cancel();
-            timerSeconds?.cancel();
-            timerMinutes?.cancel();
-            return RxBuilder(
-                builder: (context) {
-
-                  return Text(
-                    milliseconds.value == 0 ? "" : "${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}",
-                  );
-                });
+            _resetTimer();
+            return _buildTimerText();
+          } else if (state is RunningChronometer) {
+            if (!hasReseted.value) {
+              _startTimer();
+            }
+            return _buildTimerText();
+          } else if (state is PauseChronometer) {
+            _pauseTimer();
+            return _buildTimerText();
           } else {
-            return RxBuilder(
-                builder: (context) {
-                  return Text("Erro ao inicializar cronometro");
-                });
+            return const Text("00:00:00");
           }
         },
       ),
     );
   }
 
-  void contador() {
-    timerMilliseconds ??= Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
-      milliseconds.value == 999 ? milliseconds.value = 0 : milliseconds.value += 1 ;
+  void _startTimer() {
+    timer?.cancel();
+    if (hasReseted.value) {
+      milliseconds.value = 0;
+      seconds.value = 0;
+      minutes.value = 0;
+      hasReseted.value = false;
+    }
+    timer = Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
+      milliseconds.value = (milliseconds.value + 1) % 1000;
+      if (milliseconds.value == 0) {
+        seconds.value = (seconds.value + 1);
+        if (seconds.value >= 59) {
+          seconds.value = 0;
+          minutes.value += 1;
+        }
+      }
     });
-    timerSeconds ??= Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-      seconds.value == 59 ? seconds.value = 0 : seconds.value += 1;
-    });
-    timerMinutes ??= Timer.periodic(const Duration(minutes: 1), (Timer timer) {
-      minutes.value += 1;
-    });
+  }
+
+  void _pauseTimer() {
+    timer?.cancel();
+    BlocProvider.of<ChronometerBloc>(context).emit(PauseChronometer(
+        milliseconds: milliseconds.value,
+        seconds: seconds.value,
+        minutes: minutes.value
+    )
+    );
+  }
+
+  void _resetTimer() {
+    print('Passei pelo Reset');
+    timer?.cancel();
+  }
+
+  Widget _buildTimerText() {
+    return RxBuilder(
+      builder: (context) {
+        return Text(
+          "${minutes.value.toString().padLeft(2, '0')}:${seconds.value.toString().padLeft(2, '0')}:${(milliseconds.value % 1000 ~/ 10).toString().padLeft(2, '0')}",
+          style: const TextStyle(
+            fontSize: 40,
+          ),
+        );
+      },
+    );
   }
 }
