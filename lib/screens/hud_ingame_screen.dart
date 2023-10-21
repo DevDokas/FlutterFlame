@@ -16,11 +16,15 @@ class _HudIngameState extends State<HudIngame> {
   final seconds = RxNotifier<int>(0);
   final minutes = RxNotifier<int>(0);
   final hasReseted = RxNotifier<bool>(false);
-  Timer? timer;
+  Timer? timerMilliseconds;
+  Timer? timerSeconds;
+  Timer? timerMinutes;
 
   @override
   void dispose() {
-    timer?.cancel();
+    timerMilliseconds?.cancel();
+    timerSeconds?.cancel();
+    timerMinutes?.cancel();
     super.dispose();
   }
 
@@ -35,9 +39,7 @@ class _HudIngameState extends State<HudIngame> {
             _resetTimer();
             return _buildTimerText();
           } else if (state is RunningChronometer) {
-            if (!hasReseted.value) {
-              _startTimer();
-            }
+            _startTimer();
             return _buildTimerText();
           } else if (state is PauseChronometer) {
             _pauseTimer();
@@ -51,38 +53,44 @@ class _HudIngameState extends State<HudIngame> {
   }
 
   void _startTimer() {
-    timer?.cancel();
+    timerMilliseconds?.cancel();
+    timerSeconds?.cancel();
+    timerMinutes?.cancel();
     if (hasReseted.value) {
       milliseconds.value = 0;
       seconds.value = 0;
       minutes.value = 0;
       hasReseted.value = false;
     }
-    timer = Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
-      milliseconds.value = (milliseconds.value + 1) % 1000;
-      if (milliseconds.value == 0) {
-        seconds.value = (seconds.value + 1);
-        if (seconds.value >= 59) {
-          seconds.value = 0;
-          minutes.value += 1;
-        }
-      }
+    timerMilliseconds = Timer.periodic(const Duration(milliseconds: 1), (Timer timer) {
+      milliseconds.value == 999 ? milliseconds.value = 0 : milliseconds.value += 1 ;
+    });
+    timerSeconds = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
+      seconds.value == 59 ? seconds.value = 0 : seconds.value += 1;
+    });
+    timerMinutes = Timer.periodic(const Duration(minutes: 1), (Timer timer) {
+      minutes.value += 1;
     });
   }
 
   void _pauseTimer() {
-    timer?.cancel();
+    timerMilliseconds?.cancel();
+    timerSeconds?.cancel();
+    timerMinutes?.cancel();
+    milliseconds.value = milliseconds.value;
+    seconds.value = seconds.value;
+    minutes.value = minutes.value;
     BlocProvider.of<ChronometerBloc>(context).emit(PauseChronometer(
-        milliseconds: milliseconds.value,
-        seconds: seconds.value,
-        minutes: minutes.value
-    )
-    );
+      milliseconds: milliseconds.value,
+      seconds: seconds.value,
+      minutes: minutes.value,
+    ));
   }
 
   void _resetTimer() {
-    print('Passei pelo Reset');
-    timer?.cancel();
+    timerMilliseconds?.cancel();
+    timerSeconds?.cancel();
+    timerMinutes?.cancel();
   }
 
   Widget _buildTimerText() {

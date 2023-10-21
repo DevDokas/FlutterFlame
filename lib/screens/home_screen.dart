@@ -10,7 +10,7 @@ class HomeScreen extends StatelessWidget {
 
   void startGame() {
     game.overlays.remove(game.mainMenuOverlayIdentifier);
-    game.overlays.add(game.characterSelectionOverlayIdentifier);
+    game.overlays.add(game.mapSelectionOverlayIdentifier);
     game.inMainMenu = false;
     game.inCharacterSelection = true;
   }

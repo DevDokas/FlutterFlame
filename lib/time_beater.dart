@@ -49,6 +49,10 @@ class TimeBeater extends FlameGame
   String pauseOverlayIdentifier = 'PauseMenu';
   bool inPauseMenu = false;
 
+  //MapSelection
+  String mapSelectionOverlayIdentifier = 'MapSelection';
+  bool inMapSelection = false;
+
   //CharacterSelection
   String characterSelectionOverlayIdentifier = 'CharacterSelection';
   bool inCharacterSelection = false;
@@ -70,7 +74,7 @@ class TimeBeater extends FlameGame
   ChronometerBloc chronometerBloc;
 
   List<String> levelNames = [
-    "Level-01",
+    "DreamRush",
     "Level-02",
   ];
   int currentLevelIndex = 0;
@@ -83,7 +87,6 @@ class TimeBeater extends FlameGame
 
     overlays.add(hudOverlayIdentifier);
 
-    // TODO: trocar o jogo paused para nao iniciado, iniciando ao sair do menu
     if (inMainMenu) {
       overlays.add(mainMenuOverlayIdentifier);
       paused = true;
@@ -94,14 +97,6 @@ class TimeBeater extends FlameGame
 
   @override
   void update(double dt) {
-
-    if (!inMainMenu && !inCharacterSelection && !inFlagMenu) {
-      chronometerBloc.add(RunningChronometerEvent());
-    }
-    /*
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      chronometerBloc.add(RunningChronometerEvent());
-    });*/
 
     if (showControls) {
       updateJoystick();

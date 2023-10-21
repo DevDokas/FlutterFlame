@@ -3,7 +3,6 @@ import 'package:flame/camera.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
-import 'package:time_beater/screens/hud_ingame_screen.dart';
 
 import '../components/dash_button.dart';
 import '../components/down_button.dart';
@@ -15,8 +14,7 @@ import '../time_beater.dart';
 
 class CharacterSelectionScreen extends StatelessWidget {
   final TimeBeater game;
-  final HudIngame hudIngame;
-  const CharacterSelectionScreen(this.game, {super.key, required this.hudIngame});
+  const CharacterSelectionScreen(this.game, {super.key});
 
   void attChronometer(BuildContext context) {
     game.player.hasReachedCheckpoint = false;
@@ -26,20 +24,23 @@ class CharacterSelectionScreen extends StatelessWidget {
     game.add(DownButton());
     game.add(DashButton());
     game.add(PauseButton());
-    game.overlays.add(game.hudOverlayIdentifier);
     game.chronometerBloc.add(RunningChronometerEvent());
+    game.overlays.add(game.hudOverlayIdentifier);
     game.player.position = game.player.startingPosition;
     game.overlays.remove(game.characterSelectionOverlayIdentifier);
     game.overlays.add(game.admobOverlayIdentifier);
     game.paused = false;
+    game.inCharacterSelection = false;
     game.isGameRunning = true;
   }
 
   void chooseCharacter(PlayerSkins playerSkins) {
     game.removeAll(game.children);
+    game.player.hasAnimationLoaded = false;
 
     switch (playerSkins) {
       case PlayerSkins.maskDude:
+
         game.player.character = 'Mask Dude';
 
         Level world = Level(
@@ -81,6 +82,7 @@ class CharacterSelectionScreen extends StatelessWidget {
           value: game.chronometerBloc,
           children: [game.cam, world],
         ));
+        print(game.player.character);
         break;
       case PlayerSkins.pinkMan:
         game.player.character = 'Pink Man';
@@ -97,11 +99,12 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        //game.addAll([game.cam, world]);
+/*        game.addAll([game.cam, world]);*/
         game.add(FlameBlocProvider.value(
           value: game.chronometerBloc,
           children: [game.cam, world],
         ));
+        print(game.player.character);
         break;
       case PlayerSkins.virtualGuy:
         game.player.character = 'Virtual Guy';
@@ -118,11 +121,13 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        //game.addAll([game.cam, world]);
+/*        game.addAll([game.cam, world]);*/
         game.add(FlameBlocProvider.value(
           value: game.chronometerBloc,
           children: [game.cam, world],
         ));
+        world.player.character = 'Virtual Guy';
+        print(game.player.character);
         break;
       default:
         game.player.character = 'Ninja Frog';
@@ -139,11 +144,12 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        //game.addAll([game.cam, world]);
+/*        game.addAll([game.cam, world]);*/
         game.add(FlameBlocProvider.value(
           value: game.chronometerBloc,
           children: [game.cam, world],
         ));
+        world.player.character = 'Ninja Frog';
         break;
     }
   }

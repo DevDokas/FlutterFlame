@@ -1,15 +1,23 @@
+import 'package:flame/camera.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/components/movable_platform.dart';
 import 'package:time_beater/config/ColorPallet.dart';
 import 'package:time_beater/time_beater.dart';
 
+import '../components/dash_button.dart';
+import '../components/down_button.dart';
+import '../components/jump_button.dart';
+import '../components/level.dart';
 import '../components/pause_button.dart';
 
 class PauseScreen extends StatelessWidget {
   final TimeBeater game;
 
-  const PauseScreen(this.game, {super.key});
+  PauseScreen(this.game, {super.key});
 
+  MovablePlatform movablePlatform = MovablePlatform();
   void _resumeGame() {
     game.paused = false;
     game.chronometerBloc.add(RunningChronometerEvent());
@@ -19,14 +27,34 @@ class PauseScreen extends StatelessWidget {
 
   void _restartGame() {
     game.overlays.remove(game.hudOverlayIdentifier);
-    game.chronometerBloc.add(ResetChronometerEvent());
     Future.delayed(const Duration(milliseconds: 10), () {
       game.overlays.add(game.hudOverlayIdentifier);
     });
-    game.paused = false;
-    game.overlays.remove(game.pauseOverlayIdentifier);
+    game.removeAll(game.children);
+    Level world = Level(
+      levelName: game.levelNames[game.currentLevelIndex],
+      player: game.player,
+    );
+    game.cam = CameraComponent.withFixedResolution(
+      world: world,
+      width: 320,
+      height: 180,
+    );
+
+    game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
+
+    game.add(FlameBlocProvider.value(
+      value: game.chronometerBloc,
+      children: [game.cam, world],
+    ));
+
+    game.addJoystick();
+    game.add(JumpButton());
+    game.add(DownButton());
+    game.add(DashButton());
     game.add(PauseButton());
-    game.player.position = game.player.startingPosition;
+    game.overlays.remove(game.pauseOverlayIdentifier);
+    game.paused = false;
     game.chronometerBloc.add(RunningChronometerEvent());
   }
 

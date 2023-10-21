@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
+import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/services.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/checkpoint.dart';
@@ -37,14 +38,14 @@ class Player extends SpriteAnimationGroupComponent
 
   late CameraComponent cam;
 
-  late final SpriteAnimation idleAnimation;
-  late final SpriteAnimation runningAnimation;
-  late final SpriteAnimation jumpingAnimation;
-  late final SpriteAnimation doubleJumpingAnimation;
-  late final SpriteAnimation fallingAnimation;
-  late final SpriteAnimation hitAnimation;
-  late final SpriteAnimation appearingAnimation;
-  late final SpriteAnimation disappearingAnimation;
+  late SpriteAnimation idleAnimation;
+  late SpriteAnimation runningAnimation;
+  late SpriteAnimation jumpingAnimation;
+  late SpriteAnimation doubleJumpingAnimation;
+  late SpriteAnimation fallingAnimation;
+  late SpriteAnimation hitAnimation;
+  late SpriteAnimation appearingAnimation;
+  late SpriteAnimation disappearingAnimation;
   final double stepTime = 0.05;
 
   final double _gravity = 9.8;
@@ -71,6 +72,7 @@ class Player extends SpriteAnimationGroupComponent
   bool hasJumped = false;
   bool hasJumpReseted = false;
   bool hasReachedCheckpoint = false;
+  bool hasAnimationLoaded = false;
   bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
 
@@ -85,10 +87,10 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   FutureOr<void> onLoad() {
-    _loadAllAnimations();
+    //_loadAllAnimations();
     //debugMode = true;
 
-    game.overlays.add(game.hudOverlayIdentifier);
+    //game.overlays.add(game.hudOverlayIdentifier);
 
     startingPosition = Vector2(position.x, position.y);
 
@@ -102,6 +104,11 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void update(double dt) {
     accumulatedTime += dt;
+
+    if (!hasAnimationLoaded) {
+    _loadAllAnimations();
+    hasAnimationLoaded = true;
+    }
 
     while (accumulatedTime >= fixedDeltaTime) {
       if(!gotHit && !hasReachedCheckpoint) {
@@ -215,7 +222,11 @@ class Player extends SpriteAnimationGroupComponent
 
       }
       if (other is MovablePlatform) {
+        if (!other.isPlatformMoving) {
+          other.isPlatformMoving = true;
+        }
         if (other.isVertical) {
+          
           position.y = other.y - 32;
 
           if (hasJumped) {
@@ -292,6 +303,7 @@ class Player extends SpriteAnimationGroupComponent
   }
 
   SpriteAnimation _spriteAnimation(String spriteAnimation, int amount, double size ) {
+    character = game.player.character;
       return SpriteAnimation.fromFrameData(
       game.images.fromCache("Main Characters/$character/$spriteAnimation (32x32).png"), SpriteAnimationData.sequenced(
       amount: amount,
@@ -302,7 +314,6 @@ class Player extends SpriteAnimationGroupComponent
 }
 
   SpriteAnimation _appearingAnimation() {
-    print("Appears");
     return SpriteAnimation.fromFrameData(
     game.images.fromCache("Main Characters/Appearing (96x96).png"), SpriteAnimationData.sequenced(
       amount: 7,
@@ -314,7 +325,6 @@ class Player extends SpriteAnimationGroupComponent
 }
 
   SpriteAnimation _disappearingAnimation() {
-    print("Appears");
     return SpriteAnimation.fromFrameData(
       game.images.fromCache("Main Characters/Disappearing (96x96).png"), SpriteAnimationData.sequenced(
       amount: 7,
@@ -335,6 +345,7 @@ class Player extends SpriteAnimationGroupComponent
       jumpsLeft = 2;
       isOnAir = false;
       hasJumpReseted = true;
+
       if (hasJumped && hasJumpReseted) {
         jumpsLeft--;
         _playerJump(dt);

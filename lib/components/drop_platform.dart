@@ -30,19 +30,11 @@ class DropPlatform extends SpriteComponent with HasGameRef<TimeBeater>{
   double rangePos = 0;
   bool hasPlayerTouched = false;
   String platformSprite = "";
-
-  CustomHitbox hitbox = CustomHitbox(
-      offsetX: 0,
-      offsetY: 0,
-      width: 16,
-      height: 16
-  );
+  late CustomHitbox customHitbox;
 
   @override
   FutureOr<void> onLoad() {
     priority = -1;
-
-    add(RectangleHitbox());
     //debugMode = true;
 
     initialPosition = Vector2(position.x, position.y);
@@ -53,13 +45,42 @@ class DropPlatform extends SpriteComponent with HasGameRef<TimeBeater>{
 
     if (numOfPlatforms == 2) {
       platformSprite = 'Terrain/Platform(2blocks).png';
+      customHitbox = CustomHitbox(
+          offsetX: 0,
+          offsetY: 0,
+          width: 16 * 2,
+          height: 0.001
+      );
     } else if (numOfPlatforms == 3) {
       platformSprite = 'Terrain/Platform(3blocks).png';
+      customHitbox = CustomHitbox(
+          offsetX: 0,
+          offsetY: 0,
+          width: 16 * 3,
+          height: 0.001
+      );
     } else if (numOfPlatforms == 4) {
       platformSprite = 'Terrain/Platform(4blocks).png';
+      customHitbox = CustomHitbox(
+          offsetX: 0,
+          offsetY: 0,
+          width: 16 * 4,
+          height: 0.001
+      );
     } else {
       platformSprite = 'Terrain/Platform(2blocks).png';
+      customHitbox = CustomHitbox(
+          offsetX: 0,
+          offsetY: 0,
+          width: 16 * 2,
+          height: 0.001
+      );
     }
+
+    add(RectangleHitbox(
+        position: Vector2(customHitbox.offsetX, customHitbox.offsetY),
+        size: Vector2(customHitbox.width, customHitbox.height)
+    ));
 
     sprite = Sprite(game.images.fromCache(platformSprite));
     return super.onLoad();

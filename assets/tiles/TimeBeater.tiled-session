@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Level-01.tmx",
+    "activeFile": "DreamRush.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -28,16 +28,35 @@
         "C:/code/ws-flutter/bonfire_keeper/assets/tiles/TilesetTimeBeater.tsx": {
             "scaleInDock": 1
         },
+        "DreamRush.tmx": {
+            "expandedObjectLayers": [
+                3
+            ],
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 382.6666666666667,
+                "y": 561.3333333333333
+            }
+        },
+        "ForestRun.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 799.6666666666666,
+                "y": 208.33333333333331
+            }
+        },
         "Level-01.tmx": {
             "expandedObjectLayers": [
                 2,
                 3
             ],
-            "scale": 0.75,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 614.6666666666665,
-                "y": 164
+                "x": 836,
+                "y": 640
             }
         },
         "Level-02.tmx": {
@@ -45,11 +64,11 @@
                 4,
                 3
             ],
-            "scale": 1.5,
+            "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 319.66666666666663,
-                "y": 184.33333333333331
+                "x": 319.75,
+                "y": 183.75
             }
         },
         "Level-03.tmx": {
@@ -81,16 +100,16 @@
             "scale": 1.63578125,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 319.41923774954626,
-                "y": 97.50692520775623
+                "x": 318.5022447225141,
+                "y": 96.58993218072403
             }
         },
         "old-Level-01.tmx": {
             "scale": 1.63578125,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 319.41923774954626,
-                "y": 183.7042697487821
+                "x": 319.1135734072022,
+                "y": 183.39860540643804
             }
         },
         "test.tmj": {
@@ -104,24 +123,25 @@
     },
     "last.exportedFilePath": "C:/code/ws-flutter/flutter_flame/assets/tiles",
     "last.imagePath": "C:/code/ws-flutter/flutter_flame/assets/images/Background",
-    "map.height": 46,
+    "map.height": 26,
     "map.lastUsedExportFilter": "Ficheiros de mapa JSON (*.tmj *.json)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 80,
+    "map.width": 100,
     "openFiles": [
         "TilesetTimeBeater.tsx",
         "Level-02.tmx",
-        "backup.tmx",
-        "old-Level-01.tmx",
-        "Level-01.tmx"
+        "ForestRun.tmx",
+        "DreamRush.tmx"
     ],
     "project": "TimeBeater.tiled-project",
     "property.type": "int",
     "recentFiles": [
         "TilesetTimeBeater.tsx",
         "Level-02.tmx",
+        "ForestRun.tmx",
+        "DreamRush.tmx",
         "backup.tmx",
         "old-Level-01.tmx",
         "Level-01.tmx",

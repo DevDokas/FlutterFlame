@@ -7,6 +7,7 @@ import 'package:time_beater/screens/character_selection_screen.dart';
 import 'package:time_beater/screens/flag_menu.dart';
 import 'package:time_beater/screens/home_screen.dart';
 import 'package:time_beater/screens/hud_ingame_screen.dart';
+import 'package:time_beater/screens/map_selection_screen.dart';
 import 'package:time_beater/screens/load_screen.dart';
 import 'package:time_beater/screens/pause_screen.dart';
 import 'package:time_beater/time_beater.dart';
@@ -58,7 +59,10 @@ class MyAppState extends State<MyApp> {
           return LoadScreen(game);
         },
         'CharacterSelection': (BuildContext context, TimeBeater game) {
-          return CharacterSelectionScreen(game, hudIngame: HudIngame(),);
+          return CharacterSelectionScreen(game);
+        },
+        'MapSelection': (BuildContext context, TimeBeater game) {
+          return MapSelectionScreen(game);
         },
         'FlagMenu': (BuildContext context, TimeBeater game) {
           return FlagMenu(game);

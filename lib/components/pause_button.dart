@@ -30,6 +30,7 @@ class PauseButton extends SpriteComponent
 
   @override
   void onTapDown(TapDownEvent event) {
+    game.paused = true;
     game.overlays.add(pauseOverlayIdentifier);
     game.chronometerBloc.add(PauseChronometerEvent());
     super.onTapDown(event);
@@ -38,9 +39,9 @@ class PauseButton extends SpriteComponent
   @override
   void onTapUp(TapUpEvent event) {
     game.remove(this);
-    Future.delayed(const Duration(milliseconds: 100), () {
+/*    Future.delayed(const Duration(milliseconds: 100), () {
       game.paused = true;
-    });
+    });*/
     super.onTapUp(event);
   }
 }

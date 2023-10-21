@@ -80,6 +80,7 @@ flutter:
     - assets/images/Background/
     - assets/images/Terrain/
     - assets/images/HUD/
+    - assets/images/Levels/
     - assets/images/Traps/Saw/
     - assets/images/Traps/Spikes/
     - assets/images/Items/Fruits/

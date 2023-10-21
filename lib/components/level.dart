@@ -50,6 +50,7 @@ class Level extends World with HasGameRef<TimeBeater>{
       for(final spawnPoints in spawnPointsLayer.objects) {
         switch (spawnPoints.class_) {
           case "Player":
+            player.startingPosition = Vector2(spawnPoints.x, spawnPoints.y);
             player.position =  Vector2(spawnPoints.x, spawnPoints.y);
             player.scale.x = 1;
             add(player);
@@ -94,11 +95,17 @@ class Level extends World with HasGameRef<TimeBeater>{
           case "MovablePlatform":
             final isVertical = spawnPoints.properties.getValue('isVertical');
             final numOfPlatforms = spawnPoints.properties.getValue('numOfPlatforms');
+            final moveDirection = spawnPoints.properties.getValue('moveDirection');
+            final moveOnTouch = spawnPoints.properties.getValue('moveOnTouch');
+            final moveSpeed = spawnPoints.properties.getValue('moveSpeed');
             final offNeg = spawnPoints.properties.getValue('offNeg');
             final offPos = spawnPoints.properties.getValue('offPos');
             final movablePlatform = MovablePlatform(
                 isVertical: isVertical,
                 numOfPlatforms: numOfPlatforms,
+                moveDirection: moveDirection,
+                moveOnTouch: moveOnTouch,
+                moveSpeed: moveSpeed,
                 offNeg: offNeg,
                 offPos: offPos,
                 position: Vector2(spawnPoints.x, spawnPoints.y),
