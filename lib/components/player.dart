@@ -516,9 +516,13 @@ class Player extends SpriteAnimationGroupComponent
     gotHit = true;
     current = PlayerState.hit;
 
+    game.cam.follow(this, maxSpeed: 1, snap: true);
+    game.cam.viewfinder.position = Vector2(x + 16, y);
     await animationTicker?.completed;
     animationTicker?.reset();
 
+    game.cam.follow(this, maxSpeed: 1, snap: true);
+    game.cam.viewfinder.position = Vector2(x + 48, y + 32);
     scale.x = 1;
     position = startingPosition - Vector2.all(32);
     current = PlayerState.appearing;
@@ -526,6 +530,8 @@ class Player extends SpriteAnimationGroupComponent
     await animationTicker?.completed;
     animationTicker?.reset();
 
+    game.cam.follow(this, maxSpeed: 1, snap: true);
+    game.cam.viewfinder.position = Vector2(x, y);
     velocity = Vector2.zero();
     position = startingPosition;
     _updatePlayerState();
