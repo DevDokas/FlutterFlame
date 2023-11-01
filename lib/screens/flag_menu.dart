@@ -1,9 +1,18 @@
+import 'package:flame/camera.dart';
+import 'package:flame/components.dart';
+import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/components/player.dart';
 import 'package:time_beater/time_beater.dart';
 
+import '../components/dash_button.dart';
+import '../components/down_button.dart';
+import '../components/jump_button.dart';
+import '../components/level.dart';
+import '../components/pause_button.dart';
 import '../config/ColorPallet.dart';
 
 class FlagMenu extends StatelessWidget {
@@ -104,15 +113,61 @@ class FlagMenu extends StatelessWidget {
   }
 
   void _restartGame() {
+    // 1. Resetar variáveis e estados necessários
     game.player.hasReachedCheckpoint = false;
+    game.paused = false;
+    game.overlays.remove(game.flagMenuOverlayIdentifier);
+
+    // 4. Remover todos os elementos do jogo (se necessário)
+    game.removeAll(game.children);
+    game.player.hasRespawned = true;
+
+    // 5. Carregar o nível novamente
+    _loadLevel();
+
+    // 6. Reiniciar o cronômetro e outras lógicas do jogo, se necessário
     game.overlays.remove(game.hudOverlayIdentifier);
     game.chronometerBloc.add(ResetChronometerEvent());
     Future.delayed(const Duration(milliseconds: 10), () {
       game.overlays.add(game.hudOverlayIdentifier);
     });
-    game.paused = false;
-    game.overlays.remove(game.flagMenuOverlayIdentifier);
-    game.player.position = game.player.startingPosition;
     game.chronometerBloc.add(RunningChronometerEvent());
+  }
+
+  void _loadLevel() {
+    // 6. Criar o nível do jogo novamente
+
+    Level world = Level(
+      levelName: game.levelNames[game.currentLevelIndex],
+      player: game.player,
+    );
+
+    // 7. Configurar a câmera para seguir o jogador
+    game.cam = CameraComponent.withFixedResolution(
+      world: world,
+      width: 320,
+      height: 180,
+    );
+    game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
+
+    // 8. Adicionar os componentes ao jogo
+    game.add(FlameBlocProvider.value(
+      value: game.chronometerBloc,
+      children: [game.cam, world],
+    ));
+
+    game.addJoystick();
+    game.add(JumpButton());
+    game.add(DownButton());
+    game.add(DashButton());
+    game.add(PauseButton());
+
+    // 9. Configurar o estado inicial do jogador
+    game.player.current = PlayerState.idle;
+    game.player.scale.x = 1;
+    game.player.hasReachedCheckpoint = false;
+
+    // 10. Remover overlays e outros elementos visuais, se necessário
+    game.overlays.remove(game.pauseOverlayIdentifier);
   }
 }

@@ -73,6 +73,7 @@ class Player extends SpriteAnimationGroupComponent
   bool hasJumpReseted = false;
   bool hasReachedCheckpoint = false;
   bool hasAnimationLoaded = false;
+  bool hasRespawned = false;
   bool gotHit = false;
   List<CollisionBlock> collisionBlocks = [];
 
@@ -92,6 +93,8 @@ class Player extends SpriteAnimationGroupComponent
 
     //game.overlays.add(game.hudOverlayIdentifier);
 
+    scale.x = 1;
+
     startingPosition = Vector2(position.x, position.y);
 
     add(RectangleHitbox(
@@ -105,6 +108,12 @@ class Player extends SpriteAnimationGroupComponent
   void update(double dt) {
     accumulatedTime += dt;
 
+    print(scale.x);
+
+/*    if (hasRespawned) {
+      scale.x = 1;
+    }*/
+
     if (!hasAnimationLoaded) {
     _loadAllAnimations();
     hasAnimationLoaded = true;
@@ -117,6 +126,8 @@ class Player extends SpriteAnimationGroupComponent
         _checkHorizontalCollisions();
         _applyGravity(fixedDeltaTime);
         _checkVerticalCollisions();
+      } else if (hasReachedCheckpoint) {
+        _updatePlayerMovement(0);
       }
 
       accumulatedTime -= fixedDeltaTime;
@@ -410,6 +421,8 @@ class Player extends SpriteAnimationGroupComponent
   void _updatePlayerState() {
     PlayerState playerState = PlayerState.idle;
 
+
+
     if(velocity.x < 0 && scale.x > 0) {
       isFacingLeft = true;
       isFacingRight = false;
@@ -517,23 +530,28 @@ class Player extends SpriteAnimationGroupComponent
     current = PlayerState.hit;
 
     game.cam.follow(this, maxSpeed: 1, snap: true);
-    game.cam.viewfinder.position = Vector2(x + 16, y);
+    if (scale.x > 0) {
+      game.cam.viewfinder.position = Vector2(x + 16, y);
+    } else if (scale.x < 0) {
+      game.cam.viewfinder.position = Vector2(x - 16, y);
+    }
     await animationTicker?.completed;
     animationTicker?.reset();
 
+    current = PlayerState.appearing;
+    position = startingPosition - Vector2.all(32);
+    scale.x = 1;
     game.cam.follow(this, maxSpeed: 1, snap: true);
     game.cam.viewfinder.position = Vector2(x + 48, y + 32);
-    scale.x = 1;
-    position = startingPosition - Vector2.all(32);
-    current = PlayerState.appearing;
 
     await animationTicker?.completed;
     animationTicker?.reset();
 
-    game.cam.follow(this, maxSpeed: 1, snap: true);
-    game.cam.viewfinder.position = Vector2(x, y);
     velocity = Vector2.zero();
     position = startingPosition;
+    game.cam.follow(this, maxSpeed: 1, snap: true);
+    game.cam.viewfinder.position = Vector2(x, y);
+
     _updatePlayerState();
     Future.delayed(canMoveDuration, () {
       gotHit = false;
@@ -541,7 +559,7 @@ class Player extends SpriteAnimationGroupComponent
 
   }
 
-  void _reachedCheckpoint() {
+  _reachedCheckpoint() {
     hasReachedCheckpoint = true;
 
     game.chronometerBloc.add(PauseChronometerEvent());
