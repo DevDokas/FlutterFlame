@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
-import 'package:flame_tiled/flame_tiled.dart';
 import 'package:flutter/services.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/checkpoint.dart';
@@ -88,12 +87,7 @@ class Player extends SpriteAnimationGroupComponent
 
   @override
   FutureOr<void> onLoad() {
-    //_loadAllAnimations();
     //debugMode = true;
-
-    //game.overlays.add(game.hudOverlayIdentifier);
-
-    scale.x = 1;
 
     startingPosition = Vector2(position.x, position.y);
 
@@ -107,12 +101,6 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void update(double dt) {
     accumulatedTime += dt;
-
-    print(scale.x);
-
-/*    if (hasRespawned) {
-      scale.x = 1;
-    }*/
 
     if (!hasAnimationLoaded) {
     _loadAllAnimations();
@@ -155,7 +143,6 @@ class Player extends SpriteAnimationGroupComponent
     hasJumped = keysPressed.contains(LogicalKeyboardKey.arrowUp) || keysPressed.contains(LogicalKeyboardKey.keyW);
 
     hasDashed = keysPressed.contains(LogicalKeyboardKey.space);
-
 
     if (isLeftKeyPressed) {
       isGoingLeft = true;
@@ -207,9 +194,6 @@ class Player extends SpriteAnimationGroupComponent
 
     if(!hasReachedCheckpoint) {
       if (other is DropPlatform) {
-/*        Future.delayed(const Duration(seconds: 1), () {
-          other.hasPlayerTouched = true;
-        });*/
         position.y = other.y - 32;
 
         if (hasJumped) {
@@ -228,7 +212,6 @@ class Player extends SpriteAnimationGroupComponent
           current = PlayerState.idle;
         }
 
-        // Indique que o jogador está no chão
         isOnGround = true;
 
       }
@@ -256,11 +239,10 @@ class Player extends SpriteAnimationGroupComponent
             current = PlayerState.idle;
           }
 
-          // Indique que o jogador está no chão
           isOnGround = true;
 
         } else {
-          double platformVelocityX = other.velocity.x;
+          //double platformVelocityX = other.velocity.x;
 
           position.y = other.y - size.y;
 
@@ -272,7 +254,6 @@ class Player extends SpriteAnimationGroupComponent
             current = PlayerState.idle;
           }
 
-          // Indique que o jogador está no chão
           isOnGround = true;
 
         }
