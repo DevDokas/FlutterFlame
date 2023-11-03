@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/blocs/points_bloc.dart';
 import 'package:time_beater/components/player.dart';
 import 'package:time_beater/components/level.dart';
 
@@ -19,7 +20,7 @@ class TimeBeater extends FlameGame
         DragCallbacks,
         HasCollisionDetection,
         TapCallbacks {
-  TimeBeater({super.children, super.world, super.camera, super.oldCamera, required this.chronometerBloc});
+  TimeBeater({super.children, super.world, super.camera, super.oldCamera, required this.chronometerBloc, required this.pointCounterBloc});
 
 
   @override
@@ -72,6 +73,7 @@ class TimeBeater extends FlameGame
 
   //Bloc Chronometer
   ChronometerBloc chronometerBloc;
+  PointCounterBloc pointCounterBloc;
 
   List<String> levelNames = [
     "DreamRush",

@@ -13,6 +13,7 @@ import 'package:time_beater/components/spikes.dart';
 import 'package:time_beater/components/utils.dart';
 import 'package:time_beater/time_beater.dart';
 
+import '../blocs/points_bloc.dart';
 import 'collision_block.dart';
 import 'fruit.dart';
 
@@ -176,7 +177,9 @@ class Player extends SpriteAnimationGroupComponent
   @override
   void onCollisionStart(Set<Vector2> intersectionPoints, PositionComponent other) {
     if(!hasReachedCheckpoint) {
-      if (other is Fruit) other.collidedWithPlayer();
+      if (other is Fruit) {
+        other.collidedWithPlayer();
+      }
       if (other is Saw) _respawn();
       if (other is Spikes) _respawn();
       if (other is Checkpoint) _reachedCheckpoint();

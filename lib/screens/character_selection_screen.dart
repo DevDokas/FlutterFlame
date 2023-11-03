@@ -4,6 +4,7 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 
+import '../blocs/points_bloc.dart';
 import '../components/dash_button.dart';
 import '../components/down_button.dart';
 import '../components/jump_button.dart';
@@ -56,11 +57,18 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        //game.addAll([game.cam, world]);
-        game.add(FlameBlocProvider.value(
-            value: game.chronometerBloc,
-            children: [game.cam, world],
-        ));
+        game.add(FlameMultiBlocProvider(
+            providers: [
+              FlameBlocProvider<ChronometerBloc, ChronometerState>(
+                create: () => ChronometerBloc(),
+              ),
+              FlameBlocProvider<PointCounterBloc, PointCounterState>(
+                create: () => PointCounterBloc(),
+              ),
+            ],
+            children: [game.cam, world]
+        ),
+        );
         break;
       case PlayerSkins.ninjaFrog:
         game.player.character = 'Ninja Frog';

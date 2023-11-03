@@ -3,6 +3,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/blocs/points_bloc.dart';
 import 'package:time_beater/screens/character_selection_screen.dart';
 import 'package:time_beater/screens/flag_menu.dart';
 import 'package:time_beater/screens/home_screen.dart';
@@ -33,6 +34,7 @@ void main() async{
     MultiProvider(
       providers: [
         Provider(create: (_) => ChronometerBloc()),
+        Provider(create: (_) => PointCounterBloc()),
       ],
       child: MyApp(),
     ),
@@ -50,7 +52,7 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
 
     return GameWidget(
-      game: TimeBeater(chronometerBloc: context.read<ChronometerBloc>()),
+      game: TimeBeater(chronometerBloc: context.read<ChronometerBloc>(), pointCounterBloc: context.read<PointCounterBloc>()),
       overlayBuilderMap: {
         'MainMenu': (BuildContext context, TimeBeater game) {
           return HomeScreen(game);
@@ -74,7 +76,7 @@ class MyAppState extends State<MyApp> {
           return const AdmobBanner();
         },
         'HUDScreen': (BuildContext context, TimeBeater game) {
-          return HudIngame();
+          return HudIngame(game);
         },
       },
     );

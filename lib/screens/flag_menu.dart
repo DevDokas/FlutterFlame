@@ -8,6 +8,7 @@ import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/player.dart';
 import 'package:time_beater/time_beater.dart';
 
+import '../blocs/points_bloc.dart';
 import '../components/dash_button.dart';
 import '../components/down_button.dart';
 import '../components/jump_button.dart';
@@ -107,6 +108,7 @@ class FlagMenu extends StatelessWidget {
   }
 
   _backToMainMenu() {
+    game.pointCounterBloc.add(ResetPointCounterEvent());
     game.overlays.remove(game.hudOverlayIdentifier);
     game.overlays.remove(game.flagMenuOverlayIdentifier);
     game.overlays.add(game.mainMenuOverlayIdentifier);
@@ -121,11 +123,8 @@ class FlagMenu extends StatelessWidget {
 
     _loadLevel();
 
-    game.overlays.remove(game.hudOverlayIdentifier);
-    game.chronometerBloc.add(ResetChronometerEvent());
-    Future.delayed(const Duration(milliseconds: 10), () {
-      game.overlays.add(game.hudOverlayIdentifier);
-    });
+    game.pointCounterBloc.add(ResetPointCounterEvent());
+    game.gameHasReseted = true;
     game.chronometerBloc.add(RunningChronometerEvent());
     game.overlays.remove(game.flagMenuOverlayIdentifier);
   }
@@ -144,10 +143,23 @@ class FlagMenu extends StatelessWidget {
     );
     game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-    game.add(FlameBlocProvider.value(
+    game.add(FlameMultiBlocProvider(
+        providers: [
+          FlameBlocProvider<ChronometerBloc, ChronometerState>(
+            create: () => ChronometerBloc(),
+          ),
+          FlameBlocProvider<PointCounterBloc, PointCounterState>(
+            create: () => PointCounterBloc(),
+          ),
+        ],
+        children: [game.cam, world]
+    ),
+    );
+
+/*    game.add(FlameBlocProvider.value(
       value: game.chronometerBloc,
       children: [game.cam, world],
-    ));
+    ));*/
 
     game.addJoystick();
     game.add(JumpButton());

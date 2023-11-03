@@ -5,9 +5,12 @@ import 'package:flame/components.dart';
 import 'package:time_beater/components/custom_hitbox.dart';
 import 'package:time_beater/time_beater.dart';
 
+import '../blocs/points_bloc.dart';
+
 class Fruit extends SpriteAnimationComponent
     with HasGameRef<TimeBeater>, CollisionCallbacks{
   final String fruit;
+  bool collected = false;
   Fruit({
     this.fruit = "Apple",
     position,
@@ -47,6 +50,10 @@ class Fruit extends SpriteAnimationComponent
   }
 
   void collidedWithPlayer() async {
+    if (!collected) {
+      game.pointCounterBloc.add(AddPointCounterEvent());
+      collected = true;
+    }
     animation = SpriteAnimation.fromFrameData(
       game.images.fromCache('Items/Fruits/Collected.png'),
       SpriteAnimationData.sequenced(
@@ -56,7 +63,6 @@ class Fruit extends SpriteAnimationComponent
         loop: false,
       ),
     );
-
     await animationTicker?.completed;
     removeFromParent();
   }

@@ -2,6 +2,7 @@ import 'package:flame/camera.dart';
 import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
+import 'package:time_beater/blocs/points_bloc.dart';
 import 'package:time_beater/components/movable_platform.dart';
 import 'package:time_beater/config/ColorPallet.dart';
 import 'package:time_beater/time_beater.dart';
@@ -26,10 +27,8 @@ class PauseScreen extends StatelessWidget {
   }
 
   void _restartGame() {
-    game.overlays.remove(game.hudOverlayIdentifier);
-    Future.delayed(const Duration(milliseconds: 10), () {
-      game.overlays.add(game.hudOverlayIdentifier);
-    });
+    game.pointCounterBloc.add(ResetPointCounterEvent());
+    game.gameHasReseted = true;
     game.removeAll(game.children);
     Level world = Level(
       levelName: game.levelNames[game.currentLevelIndex],
@@ -43,10 +42,18 @@ class PauseScreen extends StatelessWidget {
 
     game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-    game.add(FlameBlocProvider.value(
-      value: game.chronometerBloc,
-      children: [game.cam, world],
-    ));
+    game.add(FlameMultiBlocProvider(
+        providers: [
+          FlameBlocProvider<ChronometerBloc, ChronometerState>(
+              create: () => ChronometerBloc(),
+          ),
+          FlameBlocProvider<PointCounterBloc, PointCounterState>(
+              create: () => PointCounterBloc(),
+          ),
+        ],
+        children: [game.cam, world]
+      ),
+    );
 
     game.addJoystick();
     game.add(JumpButton());
@@ -59,6 +66,7 @@ class PauseScreen extends StatelessWidget {
   }
 
   _backToMainMenu() {
+    game.pointCounterBloc.add(ResetPointCounterEvent());
     game.overlays.remove(game.hudOverlayIdentifier);
     game.overlays.remove(game.pauseOverlayIdentifier);
     game.overlays.add(game.mainMenuOverlayIdentifier);

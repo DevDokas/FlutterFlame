@@ -15,12 +15,19 @@ abstract class ChronometerEvent {
     this.milliseconds,
     this.seconds,
     this.minutes,
-});
+  });
 }
 
 class RunningChronometerEvent extends ChronometerEvent {
-  RunningChronometerEvent()
+  RunningChronometerEvent({
+    int? milliseconds,
+    int? seconds,
+    int? minutes,
+  })
       : super(
+    milliseconds: milliseconds,
+    seconds: seconds,
+    minutes: minutes,
     isRunning: true,
     reset: false,
   );
@@ -41,19 +48,26 @@ class PauseChronometerEvent extends ChronometerEvent {
 }
 
 class ResetChronometerEvent extends ChronometerEvent {
-  ResetChronometerEvent()
+  ResetChronometerEvent({
+    int? milliseconds,
+    int? seconds,
+    int? minutes,
+    })
       : super(
+    milliseconds: 0,
+    seconds: 0,
+    minutes: 0,
     isRunning: false,
     reset: true,
   );
 }
 
 abstract class ChronometerState {
-  final bool isRunning;
-  final bool reset;
-  final int? milliseconds;
-  final int? seconds;
-  final int? minutes;
+  bool isRunning;
+  bool reset;
+  int? milliseconds;
+  int? seconds;
+  int? minutes;
 
   ChronometerState({
     required this.isRunning,
@@ -65,7 +79,14 @@ abstract class ChronometerState {
 }
 
 class RunningChronometer extends ChronometerState {
-  RunningChronometer() : super(
+  RunningChronometer({
+    int? milliseconds,
+    int? seconds,
+    int? minutes,
+}) : super(
+    milliseconds: milliseconds,
+    seconds: seconds,
+    minutes: minutes,
     isRunning: true,
     reset: false,
   );
@@ -87,14 +108,21 @@ class PauseChronometer extends ChronometerState {
 }
 
 class ResetChronometer extends ChronometerState {
-  ResetChronometer() : super(
+  ResetChronometer({
+    int? milliseconds,
+    int? seconds,
+    int? minutes,
+  }) : super(
+    milliseconds: 0,
+    seconds: 0,
+    minutes: 0,
     isRunning: false,
     reset: true,
   );
 }
 
 class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
-  ChronometerBloc() : super(PauseChronometer()) {
+  ChronometerBloc() : super(PauseChronometer(milliseconds: 0, seconds: 0, minutes: 0)) {
     on<RunningChronometerEvent>(_startChronometer);
     on<PauseChronometerEvent>(_pauseChronometer);
     on<ResetChronometerEvent>(_resetChronometer);
@@ -122,9 +150,7 @@ class ChronometerBloc extends Bloc<ChronometerEvent, ChronometerState> {
   }
 
   FutureOr<void> _resetChronometer(ResetChronometerEvent event, Emitter<ChronometerState> emit) {
-
-    emit(ResetChronometer());
-    print(state);
+    emit(ResetChronometer(milliseconds: 0, seconds: 0, minutes: 0));
   }
 
 }

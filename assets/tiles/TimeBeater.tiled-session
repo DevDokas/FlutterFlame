@@ -35,8 +35,8 @@
             "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 680,
-                "y": 493.33333333333337
+                "x": 678.6666666666665,
+                "y": 492
             }
         },
         "ForestRun.tmx": {
@@ -61,8 +61,8 @@
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                3,
-                4
+                4,
+                3
             ],
             "scale": 2,
             "selectedLayer": 2,
