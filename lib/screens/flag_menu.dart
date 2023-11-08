@@ -77,7 +77,7 @@ class FlagMenu extends StatelessWidget {
                           ),
                           const SizedBox(width: 12.0),
                           Text(
-                            "x ${pointsBloc.state.points}",
+                            "x ${pointsBloc.state.points ?? '0'}",
                             style: const TextStyle(
                                 fontSize: 44
                             ),

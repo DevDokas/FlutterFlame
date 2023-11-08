@@ -70,6 +70,7 @@
   </object>
   <object id="34" name="Checkpoint" type="Checkpoint" x="1184" y="48" width="64" height="64">
    <properties>
+    <property name="final" type="bool" value="true"/>
     <property name="nextLevel" type="int" value="2"/>
    </properties>
   </object>

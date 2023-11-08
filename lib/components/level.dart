@@ -85,8 +85,10 @@ class Level extends World with HasGameRef<TimeBeater>{
             break;
           case "Checkpoint":
             final nextLevel = spawnPoints.properties.getValue('nextLevel');
+            final isFinal = spawnPoints.properties.getValue('final');
             final checkpoint = Checkpoint(
                 nextLevel: nextLevel,
+                isFinal: isFinal,
                 position: Vector2(spawnPoints.x, spawnPoints.y),
                 size: Vector2(spawnPoints.width, spawnPoints.height)
             );

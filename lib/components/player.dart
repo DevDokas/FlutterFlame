@@ -182,7 +182,14 @@ class Player extends SpriteAnimationGroupComponent
       }
       if (other is Saw) _respawn();
       if (other is Spikes) _respawn();
-      if (other is Checkpoint) _reachedCheckpoint();
+      if (other is Checkpoint) {
+        if (other.isFinal) {
+          _reachedCheckpoint();
+        } else if (!other.isFinal) {
+          startingPosition = Vector2(position.x, position.y);
+          other.hasCollided = true;
+        }
+      }
       if (other is DropPlatform) {
         Future.delayed(const Duration(seconds: 1), () {
           other.hasPlayerTouched = true;
