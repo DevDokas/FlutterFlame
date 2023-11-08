@@ -1,4 +1,4 @@
 enum GameLevels {
   dreamRush,
-  level02,
+  forestRun,
 }

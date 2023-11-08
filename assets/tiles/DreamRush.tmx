@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="46" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="117">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="46" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="121">
  <tileset firstgid="1" source="TilesetTimeBeater.tsx"/>
+ <tileset firstgid="243" source="backgrounds.tsx"/>
  <layer id="1" name="Background" width="80" height="46">
   <data encoding="csv">
 180,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,222,181,
@@ -155,14 +156,9 @@
   <object id="95" name="Spikes" type="Spikes" x="560" y="704" width="16" height="16"/>
   <object id="96" name="Spikes" type="Spikes" x="576" y="704" width="16" height="16"/>
   <object id="109" name="Apple" type="Fruit" x="32" y="448" width="32" height="32"/>
-  <object id="111" name="Apple" type="Fruit" x="432" y="160" width="32" height="32"/>
-  <object id="114" name="Apple" type="Fruit" x="224" y="656" width="32" height="32"/>
-  <object id="115" name="Apple" type="Fruit" x="304" y="656" width="32" height="32"/>
-  <object id="116" name="Checkpoint" type="Checkpoint" x="352" y="624" width="64" height="64">
-   <properties>
-    <property name="nextLevel" type="int" value="2"/>
-   </properties>
-  </object>
+  <object id="111" name="Apple" type="Fruit" x="672" y="144" width="32" height="32"/>
+  <object id="118" name="Apple" type="Fruit" x="480" y="592" width="32" height="32"/>
+  <object id="120" name="Apple" type="Fruit" x="928" y="416" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="2" name="Collisions">
   <object id="1" x="848" y="544" width="32" height="80"/>

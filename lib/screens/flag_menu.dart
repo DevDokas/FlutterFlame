@@ -24,6 +24,7 @@ class FlagMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final chronometerBloc = BlocProvider.of<ChronometerBloc>(context);
+    final pointsBloc = BlocProvider.of<PointCounterBloc>(context);
     final state = chronometerBloc.state;
     int? milliseconds = 0;
     int? seconds = 0;
@@ -55,21 +56,53 @@ class FlagMenu extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.black,
-                      border: Border.all(color: Colors.blueGrey, width: 5),
-                      borderRadius: BorderRadius.circular(10)
-                  ),
-                  child: Text(
-                    "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}:${milliseconds.toString().padLeft(3, '0')}",
-                    style: const TextStyle(
-                        fontSize: 44
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          border: Border.all(color: Colors.blueGrey, width: 3),
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      width: 130,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/Items/Fruits/AppleIcon.png',
+                            height: 32,
+                            fit: BoxFit.cover,
+                          ),
+                          const SizedBox(width: 12.0),
+                          Text(
+                            "x ${pointsBloc.state.points}",
+                            style: const TextStyle(
+                                fontSize: 44
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(width: 28),
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: Colors.black,
+                          border: Border.all(color: Colors.blueGrey, width: 5),
+                          borderRadius: BorderRadius.circular(10)
+                      ),
+                      child: Text(
+                        "${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}:${milliseconds.toString().padLeft(3, '0')}",
+                        style: const TextStyle(
+                            fontSize: 44
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 20),
                 TextButton(
                   onPressed: () => _restartGame(),
                   style: ButtonStyle(

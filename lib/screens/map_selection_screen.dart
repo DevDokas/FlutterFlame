@@ -14,7 +14,7 @@ class MapSelectionScreen extends StatelessWidget {
       case GameLevels.dreamRush:
         game.currentLevelIndex = 0;
         break;
-      case GameLevels.level02:
+      case GameLevels.forestRun:
         game.currentLevelIndex = 1;
         break;
       default:
@@ -83,11 +83,11 @@ class MapSelectionScreen extends StatelessWidget {
                     ),
                     TextButton(
                       onPressed: () => {
-                        chooseMap(GameLevels.level02),
+                        chooseMap(GameLevels.forestRun),
                       },
                       child: InkWell(
                         onTap: () => {
-                          chooseMap(GameLevels.level02),
+                          chooseMap(GameLevels.forestRun),
                         },
                         child: Container(
                           height: double.infinity,

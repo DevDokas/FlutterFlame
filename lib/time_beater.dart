@@ -77,7 +77,7 @@ class TimeBeater extends FlameGame
 
   List<String> levelNames = [
     "DreamRush",
-    "Level-02",
+    "ForestRun",
   ];
   int currentLevelIndex = 0;
 
