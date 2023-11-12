@@ -36,8 +36,8 @@
             "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1477.333333333333,
-                "y": 162.66666666666669
+                "x": 600,
+                "y": 161.33333333333337
             }
         },
         "ForestRun.tmx": {
@@ -45,11 +45,11 @@
                 2,
                 3
             ],
-            "scale": 3,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 691,
-                "y": 361.3333333333333
+                "x": 600,
+                "y": 418
             }
         },
         "Level-01.tmx": {
@@ -66,14 +66,14 @@
         },
         "Level-02.tmx": {
             "expandedObjectLayers": [
-                4,
-                3
+                3,
+                4
             ],
             "scale": 2,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 318,
-                "y": 182.5
+                "x": 319.75,
+                "y": 183.75
             }
         },
         "Level-03.tmx": {

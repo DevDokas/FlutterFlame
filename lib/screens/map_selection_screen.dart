@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:time_beater/data/game_levels.dart';
 import 'package:time_beater/time_beater.dart';
@@ -24,7 +23,6 @@ class MapSelectionScreen extends StatelessWidget {
 
     game.overlays.remove(game.mapSelectionOverlayIdentifier);
     game.overlays.add(game.characterSelectionOverlayIdentifier);
-    //game.currentLevelIndex = levelSelected;
   }
 
   @override
@@ -70,9 +68,10 @@ class MapSelectionScreen extends StatelessWidget {
                               const Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
-                                  "Level 01",
+                                  "Dream Rush",
                                   style: TextStyle(
                                     color: Colors.white,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),
@@ -100,16 +99,17 @@ class MapSelectionScreen extends StatelessWidget {
                             children: [
                               Center(
                                 child: Image.asset(
-                                  'assets/images/Levels/level01.png',
+                                  'assets/images/Levels/level02.png',
                                   height: 300,
                                 ),
                               ),
                               const Align(
                                 alignment: Alignment.topCenter,
                                 child: Text(
-                                  "Level 02",
+                                  "Forest Run",
                                   style: TextStyle(
                                     color: Colors.white,
+                                    fontSize: 20,
                                   ),
                                 ),
                               ),

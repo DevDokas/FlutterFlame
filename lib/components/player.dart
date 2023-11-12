@@ -13,7 +13,6 @@ import 'package:time_beater/components/spikes.dart';
 import 'package:time_beater/components/utils.dart';
 import 'package:time_beater/time_beater.dart';
 
-import '../blocs/points_bloc.dart';
 import 'collision_block.dart';
 import 'fruit.dart';
 
@@ -52,7 +51,7 @@ class Player extends SpriteAnimationGroupComponent
   final double _jumpForce = 200;
   final double _terminalVelocity = 300;
   double horizontalMovement = 0;
-  double moveSpeed = 100;
+  double moveSpeed = 150;
   int jumpsLeft = 2;
   Vector2 startingPosition = Vector2.zero();
   Vector2 velocity = Vector2.zero();
