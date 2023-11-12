@@ -13,6 +13,9 @@ import 'package:time_beater/screens/load_screen.dart';
 import 'package:time_beater/screens/pause_screen.dart';
 import 'package:time_beater/time_beater.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 
 import 'config/Admob/AdmobBanner.dart';
 
@@ -27,6 +30,10 @@ void main() async{
     testDeviceIds: devices
   );
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     /// Providers are above [MyApp] instead of inside it, so that tests

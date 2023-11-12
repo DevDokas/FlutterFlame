@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   flame: ^1.8.2
   flame_tiled: ^1.13.0
-  firebase_core: ^2.22.0
   google_mobile_ads: ^3.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
@@ -47,6 +46,10 @@ dependencies:
   flutter_bloc: ^8.0.0
   flame_bloc: ^1.10.3
   rx_notifier: ^2.3.0
+
+  # Firebase
+  firebase_core: ^2.22.0
+  firebase_auth: ^4.13.0
 
   # Remover caso nao for usar
   provider: ^6.0.5
