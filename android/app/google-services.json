@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "263998496792",
+    "project_id": "time-beater-92596035",
+    "storage_bucket": "time-beater-92596035.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:263998496792:android:4e8c952ef21e0432f0236d",
+        "android_client_info": {
+          "package_name": "com.igordokai.flutter_flame"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbBCwom9thmwIUtE5gOKvA3xM3Byt5uYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
