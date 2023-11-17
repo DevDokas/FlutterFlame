@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/blocs/points_bloc.dart';
+import 'package:time_beater/config/localstorage/localstorage_gameconfig.dart';
+import 'package:time_beater/config/localstorage/localstorage_gamestate.dart';
 import 'package:time_beater/screens/character_selection_screen.dart';
-import 'package:time_beater/screens/flag_menu.dart';
+import 'package:time_beater/screens/config_screen.dart';
+import 'package:time_beater/screens/flag_menu_screen.dart';
 import 'package:time_beater/screens/home_screen.dart';
 import 'package:time_beater/screens/hud_ingame_screen.dart';
 import 'package:time_beater/screens/map_selection_screen.dart';
@@ -15,6 +18,7 @@ import 'package:time_beater/time_beater.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 
 import 'config/Admob/AdmobBanner.dart';
@@ -30,6 +34,12 @@ void main() async{
     testDeviceIds: devices
   );
   MobileAds.instance.updateRequestConfiguration(requestConfiguration);
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(LocalStorageGameConfigAdapter());
+  Hive.registerAdapter(LocalStorageGameStateAdapter());
+  Hive.registerAdapter(ListLocalStorageGameStateAdapter());
+  var gamestateBox = await Hive.openBox("gamestateBox");
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -63,6 +73,9 @@ class MyAppState extends State<MyApp> {
       overlayBuilderMap: {
         'MainMenu': (BuildContext context, TimeBeater game) {
           return HomeScreen(game);
+        },
+        'ConfigScreen': (BuildContext context, TimeBeater game) {
+          return ConfigScreen(game);
         },
         'LoadScreen': (BuildContext context, TimeBeater game) {
           return LoadScreen(game);

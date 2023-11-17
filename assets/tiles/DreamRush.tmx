@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="46" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="121">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="80" height="46" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="123">
  <tileset firstgid="1" source="TilesetTimeBeater.tsx"/>
  <tileset firstgid="243" source="backgrounds.tsx"/>
  <layer id="1" name="Background" width="80" height="46">
@@ -160,6 +160,12 @@
   <object id="111" name="Apple" type="Fruit" x="672" y="144" width="32" height="32"/>
   <object id="118" name="Apple" type="Fruit" x="480" y="592" width="32" height="32"/>
   <object id="120" name="Apple" type="Fruit" x="928" y="416" width="32" height="32"/>
+  <object id="122" name="Checkpoint" type="Checkpoint" x="736" y="624" width="64" height="64">
+   <properties>
+    <property name="final" type="bool" value="true"/>
+    <property name="nextLevel" type="int" value="2"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="2" name="Collisions">
   <object id="1" x="848" y="544" width="32" height="80"/>

@@ -69,6 +69,7 @@ class CharacterSelectionScreen extends StatelessWidget {
             children: [game.cam, world]
         ),
         );
+        game.overlays.add(game.hudOverlayIdentifier);
         break;
       case PlayerSkins.ninjaFrog:
         game.player.character = 'Ninja Frog';
@@ -85,12 +86,19 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-        //game.addAll([game.cam, world]);
-        game.add(FlameBlocProvider.value(
-          value: game.chronometerBloc,
-          children: [game.cam, world],
-        ));
-        print(game.player.character);
+        game.add(FlameMultiBlocProvider(
+            providers: [
+              FlameBlocProvider<ChronometerBloc, ChronometerState>(
+                create: () => ChronometerBloc(),
+              ),
+              FlameBlocProvider<PointCounterBloc, PointCounterState>(
+                create: () => PointCounterBloc(),
+              ),
+            ],
+            children: [game.cam, world]
+        ),
+        );
+        game.overlays.add(game.hudOverlayIdentifier);
         break;
       case PlayerSkins.pinkMan:
         game.player.character = 'Pink Man';
@@ -107,12 +115,19 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-/*        game.addAll([game.cam, world]);*/
-        game.add(FlameBlocProvider.value(
-          value: game.chronometerBloc,
-          children: [game.cam, world],
-        ));
-        print(game.player.character);
+        game.add(FlameMultiBlocProvider(
+            providers: [
+              FlameBlocProvider<ChronometerBloc, ChronometerState>(
+                create: () => ChronometerBloc(),
+              ),
+              FlameBlocProvider<PointCounterBloc, PointCounterState>(
+                create: () => PointCounterBloc(),
+              ),
+            ],
+            children: [game.cam, world]
+        ),
+        );
+        game.overlays.add(game.hudOverlayIdentifier);
         break;
       case PlayerSkins.virtualGuy:
         game.player.character = 'Virtual Guy';
@@ -129,13 +144,19 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-/*        game.addAll([game.cam, world]);*/
-        game.add(FlameBlocProvider.value(
-          value: game.chronometerBloc,
-          children: [game.cam, world],
-        ));
-        world.player.character = 'Virtual Guy';
-        print(game.player.character);
+        game.add(FlameMultiBlocProvider(
+            providers: [
+              FlameBlocProvider<ChronometerBloc, ChronometerState>(
+                create: () => ChronometerBloc(),
+              ),
+              FlameBlocProvider<PointCounterBloc, PointCounterState>(
+                create: () => PointCounterBloc(),
+              ),
+            ],
+            children: [game.cam, world]
+        ),
+        );
+        game.overlays.add(game.hudOverlayIdentifier);
         break;
       default:
         game.player.character = 'Ninja Frog';
@@ -152,12 +173,19 @@ class CharacterSelectionScreen extends StatelessWidget {
 
         game.cam.follow(game.player, maxSpeed: game.cameraSpeed, snap: true);
 
-/*        game.addAll([game.cam, world]);*/
-        game.add(FlameBlocProvider.value(
-          value: game.chronometerBloc,
-          children: [game.cam, world],
-        ));
-        world.player.character = 'Ninja Frog';
+        game.add(FlameMultiBlocProvider(
+            providers: [
+              FlameBlocProvider<ChronometerBloc, ChronometerState>(
+                create: () => ChronometerBloc(),
+              ),
+              FlameBlocProvider<PointCounterBloc, PointCounterState>(
+                create: () => PointCounterBloc(),
+              ),
+            ],
+            children: [game.cam, world]
+        ),
+        );
+        game.overlays.add(game.hudOverlayIdentifier);
         break;
     }
   }

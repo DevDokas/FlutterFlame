@@ -32,6 +32,10 @@ class TimeBeater extends FlameGame
 
   late JoystickComponent joystick;
 
+  //LocalStorage
+  String localStorage = 'LocalStorage';
+  String localConfig = 'LocalConfig';
+
   //Ads
   String admobOverlayIdentifier = 'AdmobBanner';
 
@@ -41,6 +45,9 @@ class TimeBeater extends FlameGame
   //MainMenu
   String mainMenuOverlayIdentifier = 'MainMenu';
   bool inMainMenu = true;
+
+  //ConfigScreen
+  String configScreenOverlayIdentifier = 'ConfigScreen';
 
   //FlagMenu
   String flagMenuOverlayIdentifier = 'FlagMenu';
@@ -86,8 +93,6 @@ class TimeBeater extends FlameGame
     priority = 1;
 
     await images.loadAllImages();
-
-    overlays.add(hudOverlayIdentifier);
 
     if (inMainMenu) {
       overlays.add(mainMenuOverlayIdentifier);

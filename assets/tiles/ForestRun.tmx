@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="26" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="134">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="100" height="26" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="135">
  <tileset firstgid="1" source="TilesetTimeBeater.tsx"/>
  <layer id="1" name="Background" width="100" height="26">
   <data encoding="csv">
@@ -182,6 +182,12 @@
   <object id="132" name="Checkpoint" type="Checkpoint" x="944" y="80" width="64" height="64">
    <properties>
     <property name="final" type="bool" value="false"/>
+    <property name="nextLevel" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="134" name="Checkpoint" type="Checkpoint" x="160" y="240" width="64" height="64">
+   <properties>
+    <property name="final" type="bool" value="true"/>
     <property name="nextLevel" type="int" value="2"/>
    </properties>
   </object>

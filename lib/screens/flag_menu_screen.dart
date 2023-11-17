@@ -4,8 +4,10 @@ import 'package:flame_bloc/flame_bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/components/player.dart';
+import 'package:time_beater/config/localstorage/localstorage_gamestate.dart';
 import 'package:time_beater/time_beater.dart';
 
 import '../blocs/points_bloc.dart';
@@ -14,7 +16,7 @@ import '../components/down_button.dart';
 import '../components/jump_button.dart';
 import '../components/level.dart';
 import '../components/pause_button.dart';
-import '../config/ColorPallet.dart';
+import '../config/color_pallet.dart';
 
 class FlagMenu extends StatelessWidget {
   final TimeBeater game;
@@ -23,12 +25,119 @@ class FlagMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _gamestateBox = Hive.box('gamestateBox');
     final chronometerBloc = BlocProvider.of<ChronometerBloc>(context);
     final pointsBloc = BlocProvider.of<PointCounterBloc>(context);
     final state = chronometerBloc.state;
     int? milliseconds = 0;
     int? seconds = 0;
     int? minutes = 0;
+
+    convertStoragedValue(String tempo) {
+      RegExp exp = RegExp(r'(\d+):(\d+):(\d+)');
+      Match match = exp.firstMatch(tempo) as Match;
+      int minutos = 0;
+      int segundos = 0;
+      int millisegundos = 0;
+      var valueInMilliseconds = 0;
+
+      if (match != null) {
+        String? minutosStr = match.group(1);
+        String? segundosStr = match.group(2);
+        String? millisegundosStr = match.group(3);
+
+        if (millisegundosStr != null) {
+          millisegundos = int.parse(millisegundosStr);
+          valueInMilliseconds = millisegundos;
+        }
+
+        if (segundosStr != null) {
+          segundos = int.parse(segundosStr);
+          valueInMilliseconds = valueInMilliseconds + (segundos * 1000);
+        }
+
+        if (minutosStr != null) {
+          minutos = int.parse(minutosStr);
+          valueInMilliseconds = valueInMilliseconds + (minutos * 60 * 1000);
+        }
+
+        return valueInMilliseconds;
+      }
+    }
+
+    convertValue() {
+      var valueInMilliseconds = 0;
+
+      if (milliseconds != null) {
+        valueInMilliseconds = milliseconds;
+      }
+
+      if (seconds != null) {
+        valueInMilliseconds = valueInMilliseconds + (seconds * 1000);
+      }
+
+      if (minutes != null) {
+        valueInMilliseconds = valueInMilliseconds + (minutes * 60 * 1000);
+      }
+
+      return valueInMilliseconds;
+    }
+
+    void localstorageUpdate() {
+
+      LocalStorageGameState? storagedValue = _gamestateBox.get(game.localStorage);
+
+      int? pointsValue = pointsBloc.state.points;
+
+      String timeValue = '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}:${milliseconds.toString().padLeft(3, '0')}';
+      String? timeStoragedValue = storagedValue?.bestTime;
+
+      int? valueInMilliseconds;
+      int? storagedValueInMilliseconds;
+
+
+      valueInMilliseconds = convertValue();
+      if (timeStoragedValue != null) {
+        storagedValueInMilliseconds = convertStoragedValue(timeStoragedValue);
+      }
+
+/*      LocalStorageGameState box = LocalStorageGameState(
+          game.levelNames[game.currentLevelIndex],
+          timeValue,
+          pointsValue ?? 0
+      );*/
+
+      List<LocalStorageGameState> box = <LocalStorageGameState>[
+        LocalStorageGameState(game.levelNames[0], null, null),
+        LocalStorageGameState(game.levelNames[1], null, null),
+      ];
+
+      switch (game.levelNames[game.currentLevelIndex]) {
+        case 'DreamRush':
+          box[0].bestTime = timeValue;
+          box[0].bestCollect = pointsValue ?? 0;
+          break;
+        case 'ForestRun':
+          box[1].bestTime = timeValue;
+          box[1].bestCollect = pointsValue ?? 0;
+          break;
+      }
+
+      if (storagedValueInMilliseconds == null) {
+        _gamestateBox.put(game.localStorage, box);
+      } else if (storagedValueInMilliseconds != null && valueInMilliseconds < storagedValueInMilliseconds) {
+        _gamestateBox.put(game.localStorage, box);
+      }
+
+/*      print("value in milliseconds");
+      print(valueInMilliseconds);
+
+      print("storaged value in milliseconds");
+      print(storagedValueInMilliseconds);*/
+
+      print("box");
+      print(storagedValue?.bestTime);
+    }
 
      if (state is PauseChronometer) {
       milliseconds = state.milliseconds;
@@ -104,7 +213,10 @@ class FlagMenu extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 TextButton(
-                  onPressed: () => _restartGame(),
+                  onPressed: () => {
+                    localstorageUpdate(),
+                    _restartGame()
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(ColorPallet().primaryButtonColor),
                     foregroundColor: MaterialStateProperty.all(Colors.white),
@@ -116,7 +228,10 @@ class FlagMenu extends StatelessWidget {
                   child: const Text("Reiniciar a nivel"),
                 ),
                 TextButton(
-                  onPressed: () => _backToMainMenu(),
+                  onPressed: () => {
+                    localstorageUpdate(),
+                    _backToMainMenu()
+                  },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(ColorPallet().primaryButtonColor),
                     foregroundColor: MaterialStateProperty.all(Colors.white),

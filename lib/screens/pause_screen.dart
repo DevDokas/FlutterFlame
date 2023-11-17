@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:time_beater/blocs/chronometer_bloc.dart';
 import 'package:time_beater/blocs/points_bloc.dart';
 import 'package:time_beater/components/movable_platform.dart';
-import 'package:time_beater/config/ColorPallet.dart';
+import 'package:time_beater/config/color_pallet.dart';
 import 'package:time_beater/time_beater.dart';
 
 import '../components/dash_button.dart';
